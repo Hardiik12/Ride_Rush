@@ -8,6 +8,7 @@ CO1 outlier analysis, CO1 missing value analysis, and Simple Linear Regression w
 
 import os
 import socket
+import pandas as pd
 from flask import Flask, render_template, request, jsonify
 from data import (
     get_data, predict_fare, predict_workbench_fare,

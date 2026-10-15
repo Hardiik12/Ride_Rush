@@ -818,12 +818,22 @@ def test_workbench_all_tabs_and_extended_apis(client):
     assert "m1_lifecycle" in json_sum
     assert "m2_regression" in json_sum
 
-    # Test /api/workbench/batch-predict
+    # Test /api/workbench/batch-predict with CSV
     resp_batch = client.post("/api/workbench/batch-predict", data="trip_distance\n2.5\n5.0\n", content_type="text/plain")
     assert resp_batch.status_code == 200
     b_json = resp_batch.get_json()
     assert b_json["status"] == "success"
     assert b_json["total_processed"] == 2
+
+    # Test /api/workbench/batch-predict with JSON
+    resp_batch_json = client.post(
+        "/api/workbench/batch-predict",
+        json={"records": [{"trip_distance": 2.5}, {"trip_distance": 5.0}], "model": "polynomial"}
+    )
+    assert resp_batch_json.status_code == 200
+    bj_json = resp_batch_json.get_json()
+    assert bj_json["status"] == "success"
+    assert bj_json["total_processed"] == 2
 
     # Test /api/workbench/drift
     resp_drift = client.get("/api/workbench/drift")
