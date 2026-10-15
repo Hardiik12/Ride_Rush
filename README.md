@@ -1,5 +1,6 @@
 # RideRush — NYC Yellow Taxi Big Data Analytics & Production Machine Learning Platform
 
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Hardiik12%2FRide__Rush-181717.svg?logo=github)](https://github.com/Hardiik12/Ride_Rush)
 [![Python 3.13](https://img.shields.io/badge/Python-3.13.5-blue.svg)](https://www.python.org/)
 [![Flask 3.1](https://img.shields.io/badge/Flask-3.1.3-green.svg)](https://flask.palletsprojects.com/)
 [![Dask 2026.7](https://img.shields.io/badge/Dask-2026.7.1-orange.svg)](https://www.dask.org/)
@@ -7,6 +8,7 @@
 [![Tests Passing](https://img.shields.io/badge/Tests-35%2F35%20Passing-brightgreen.svg)](tests/test_app.py)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](Dockerfile)
 [![Course Outcomes](https://img.shields.io/badge/Course%20Outcomes-CO1--CO6%20Complete-success.svg)](docs/CO1_CO6_COVERAGE.md)
+[![Academic Audit](https://img.shields.io/badge/Academic%20Audit-100%25%20Verified-brightgreen.svg)](docs/FINAL_IMPLEMENTATION_REPORT.md)
 
 RideRush is an enterprise-grade Big Data Exploratory Data Analysis (EDA) and Machine Learning Platform engineered to process, analyze, model, and serve predictions on millions of records from the official **New York City Taxi & Limousine Commission (TLC) Yellow Taxi Trip Record** dataset.
 
@@ -433,6 +435,21 @@ RideRush provides a unified, responsive dark-themed dashboard built with semanti
 | **`tab-evaluation`** | Model Evaluation | CO6 / M5 | 5-Fold CV, Nested CV, Grid vs Random search, Platt/Isotonic calibration curves, McNemar test, Bootstrap CI |
 | **`tab-engineering`** | ML Engineering | CO6 / M6 | Cryptographic model registry, SHA-256 integrity checker, live serving telemetry, Kolmogorov-Smirnov drift test |
 | **`tab-syllabus`** | Course Outcomes | CO1–CO6 Matrix | Full 76-topic Course Outcome Traceability Matrix with live status badges and direct navigation links |
+
+### Visual Diagnostics & Workbench Charts Gallery
+
+The RideRush platform automatically generates, caches, and renders 24 high-resolution diagnostic charts across the ML lifecycle:
+
+| Diagnostic Figure | Domain & Algorithmic Insights |
+| :---: | :--- |
+| ![M1 Lifecycle Architecture](static/charts/m1_lifecycle_flow.png) | **12-Stage ML Lifecycle (M1 / CO1 / CO6)**<br>Production architecture separating training from serving, data partitioning, and monitoring loops. |
+| ![Regression Benchmarks](static/charts/regression_workbench_metrics.png) | **CO2 Supervised Regression Workbench**<br>Empirical comparison of MAE, RMSE, and $R^2$ across Gradient Descent, Normal Equation, Polynomial, Ridge, Lasso, and Elastic Net. |
+| ![Classification Diagnostic Curves](static/charts/m2_classification_curves.png) | **CO3 Supervised Classification**<br>ROC-AUC curves, Precision-Recall curves, and confusion matrices for balanced high-tip and multi-tier fare modeling. |
+| ![Tree Ensembles & Feature Importance](static/charts/m3_tree_benchmarks.png) | **CO4 Tree Ensembles & Boosting**<br>Pre/post-pruning paths, Random Forest OOB score, boosting comparisons, and MDI vs. Permutation importance. |
+| ![Unsupervised Clusters & PCA](static/charts/m4_unsupervised_clusters.png) | **CO5 Unsupervised Learning & Anomalies**<br>$K$-Means Elbow WCSS inflection, Silhouette scores, Hierarchical Ward dendrogram, DBSCAN, and 2D PCA projection (98.75% variance). |
+| ![Model Evaluation & Calibration](static/charts/m5_model_evaluation.png) | **CO6 Model Evaluation & Calibration**<br>5-fold cross-validation distribution, learning curves, Platt vs. Isotonic reliability diagrams, and Brier scores. |
+| ![Outlier Boxplots](static/charts/outlier_boxplots.png) | **CO1 Outlier Diagnostics**<br>Five-number statistical Tukey bounds and boxplots comparing raw vs. Winsorized fare distributions. |
+| ![Feature Scaling Comparison](static/charts/scaling_comparison.png) | **CO1 Feature Scalers & Leakage Guards**<br>Distribution transformations under `StandardScaler` ($\mu=0, \sigma=1$), `MinMaxScaler` ($[0,1]$), and `RobustScaler` (median/IQR). |
 
 ---
 
