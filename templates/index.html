@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — NYC Taxi Big Data Analytics{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>NYC TAXI BIG DATA ANALYTICS</h1>
+    <p>Exploratory Data Analysis using Dask & NYC TLC Yellow Taxi Dataset (January 2025)</p>
+</div>
+
+{% if error %}
+<div class="alert-box" style="border-color: #f85149;">
+    <h3 style="color: #f85149;">Dataset Status Alert</h3>
+    <p>{{ error }}</p>
+</div>
+{% endif %}
+
+<!-- KPI Cards -->
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <span class="kpi-title">Dataset</span>
+        <span class="kpi-value" style="font-size: 1.2rem;">Yellow Taxi — Jan 2025</span>
+        <span class="kpi-sub">Parquet Format</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Raw Records</span>
+        <span class="kpi-value">{{ "{:,}".format(data.dataset_info.total_rows) }}</span>
+        <span class="kpi-sub">Out-of-Core Processing</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Columns</span>
+        <span class="kpi-value">{{ data.dataset_info.num_columns }}</span>
+        <span class="kpi-sub">Raw Features</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Dask Partitions</span>
+        <span class="kpi-value">{{ data.dataset_info.num_partitions }}</span>
+        <span class="kpi-sub">Parallel Chunking</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Average Trip Distance</span>
+        <span class="kpi-value">{{ data.insights.avg_trip_distance }}</span>
+        <span class="kpi-sub">Cleaned Dataset</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Average Fare</span>
+        <span class="kpi-value">{{ data.insights.avg_fare }}</span>
+        <span class="kpi-sub">Base Fare</span>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Project Overview & Architecture</h2>
+    <p style="margin-bottom: 1rem;">
+        This web application performs end-to-end Big Data Exploratory Data Analysis (EDA) on millions of NYC Yellow Taxi trip records. Built using <strong>Dask</strong>, it demonstrates lazy task evaluation, out-of-core chunk computations, and parallel aggregations without loading the entire raw dataset into system memory at once.
+    </p>
+    <div class="alert-box">
+        <strong>Current Scope Note:</strong> This application strictly covers Exploratory Data Analysis (EDA). Feature engineering, machine learning modeling, prediction engines, and model evaluation modules will be integrated in subsequent project phases.
+    </div>
+</div>
+
+<div class="card">
+    <h2>EDA Workflow Pipeline</h2>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+        <div class="badge badge-info">1. Data Loading</div>
+        <div class="badge badge-info">2. Data Understanding</div>
+        <div class="badge badge-warning">3. Data Quality Analysis</div>
+        <div class="badge badge-success">4. Data Cleaning</div>
+        <div class="badge badge-info">5. Visual EDA</div>
+        <div class="badge badge-success">6. Key Insights</div>
+    </div>
+</div>
+{% endblock %}

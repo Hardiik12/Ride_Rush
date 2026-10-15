@@ -1,0 +1,8 @@
+{
+  "model_name": "test_ridge_m6",
+  "binary_file": "test_ridge_m6.joblib",
+  "sha256_checksum": "d90e2a6f93ae92f0978d8aff662e0a876f42de5b47baf4abc57b0db89ea66b6c",
+  "target_name": "fare_amount",
+  "feature_schema": {
+    "trip_distance": {
+      "type": 

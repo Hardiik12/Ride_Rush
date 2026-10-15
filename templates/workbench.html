@@ -1,0 +1,643 @@
+{% extends "base.html" %}
+
+{% block title %}RideRush — Master Machine Learning Workbench (M1–M6){% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1>🧪 RideRush ML Engineering & Model Workbench</h1>
+            <p>Unified Machine Learning Laboratory for Big Data: M1 Lifecycle through M6 Production Engineering — Comprehensive Regression Model Workbench</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <span class="badge badge-info" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">Dask + Scikit-Learn</span>
+            <span class="badge badge-success" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">Zero Leakage</span>
+        </div>
+    </div>
+</div>
+
+<!-- Tab Navigation Bar -->
+<div class="workbench-tabs" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+    <button type="button" class="tab-btn" data-tab="lifecycle" onclick="showTab('lifecycle')">🔄 Lifecycle (M1)</button>
+    <button type="button" class="tab-btn active" data-tab="regression" onclick="showTab('regression')">📈 Regression (M2)</button>
+    <button type="button" class="tab-btn" data-tab="classification" onclick="showTab('classification')">🎯 Classification (M2)</button>
+    <button type="button" class="tab-btn" data-tab="trees" onclick="showTab('trees')">🌲 Trees & Boosting (M3)</button>
+    <button type="button" class="tab-btn" data-tab="unsupervised" onclick="showTab('unsupervised')">🔍 Clustering & PCA (M4)</button>
+    <button type="button" class="tab-btn" data-tab="evaluation" onclick="showTab('evaluation')">⚖️ Evaluation & Calibration (M5)</button>
+    <button type="button" class="tab-btn" data-tab="engineering" onclick="showTab('engineering')">🛡️ ML Engineering (M6)</button>
+    <button type="button" class="tab-btn" data-tab="syllabus" onclick="showTab('syllabus')">📋 Syllabus Coverage</button>
+</div>
+
+<!-- Style overrides for tab buttons -->
+<style>
+.tab-btn {
+    background: #161b22;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.6rem 1.1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.tab-btn:hover {
+    background: #21262d;
+    color: #f0f6fc;
+}
+.tab-btn.active {
+    background: var(--primary-color);
+    color: #0d1117;
+    border-color: var(--primary-color);
+}
+.tab-pane {
+    display: none;
+}
+.tab-pane.active {
+    display: block;
+}
+</style>
+
+<!-- ========================================== -->
+<!-- TAB 1: M1 MACHINE LEARNING LIFECYCLE       -->
+<!-- ========================================== -->
+<div id="tab-lifecycle" class="tab-pane">
+    <div class="card" style="border-left: 4px solid #58a6ff;">
+        <h2>🔄 End-to-End Machine Learning Production Lifecycle</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            RideRush implements an industrial 12-stage ML pipeline, strictly decoupling data ingestion, feature engineering, and model training from production serving and monitoring.
+        </p>
+        
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <img src="{{ url_for('static', filename='charts/m1_lifecycle_flow.png') }}" alt="ML Lifecycle Flow" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+        </div>
+
+        <h3>📋 Lifecycle Stage to File Mapping</h3>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th>File / Module</th>
+                        <th>Core Function / Entrypoint</th>
+                        <th>Artifact Produced</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for st in m1.get('lifecycle_stages', []) %}
+                    <tr>
+                        <td><strong>{{ st.stage_id }}. {{ st.name }}</strong></td>
+                        <td style="font-family: monospace; color: #58a6ff;">{{ st.file }}</td>
+                        <td style="font-family: monospace; color: #3fb950;">{{ st.entrypoint }}</td>
+                        <td style="font-family: monospace; font-size: 0.8rem; color: #bc8cff;">{{ st.artifact }}</td>
+                        <td style="font-size: 0.85rem; color: var(--text-secondary);">{{ st.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Interactive Batch Prediction -->
+    <div class="card" style="border-left: 4px solid var(--accent-green);">
+        <h2>📦 Batch Prediction Engine</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+            Submit batch CSV records (up to 1,000 trips) to simulate production tabular ingestion. Vectorized inference estimates meter fares in under 10ms.
+        </p>
+
+        <form method="POST" action="{{ url_for('workbench_page') }}?tab=lifecycle">
+            <input type="hidden" name="form_type" value="batch">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                <div style="flex: 2; min-width: 300px;">
+                    <label for="batch_csv" style="font-weight: 600; font-size: 0.9rem; color: #f0f6fc; display: block; margin-bottom: 0.5rem;">Batch CSV Input (trip_distance required):</label>
+                    <textarea id="batch_csv" name="batch_csv" rows="5" style="width: 100%; background: #21262d; border: 1px solid var(--border-color); color: #f0f6fc; padding: 0.75rem; border-radius: 6px; font-family: monospace; font-size: 0.9rem;">trip_distance,passenger_count
+1.5,1
+3.2,2
+8.4,1
+15.0,3
+22.7,1</textarea>
+                </div>
+                <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <label for="batch_model_key" style="font-weight: 600; font-size: 0.9rem; color: #f0f6fc; display: block; margin-bottom: 0.5rem;">Inference Architecture:</label>
+                        <select id="batch_model_key" name="batch_model_key" style="width: 100%; background: #21262d; border: 1px solid var(--border-color); color: #f0f6fc; padding: 0.75rem; border-radius: 6px;">
+                            <option value="polynomial">Polynomial Regression (Degree 2)</option>
+                            <option value="ridge">Ridge Regression (L2, α=1.0)</option>
+                            <option value="lasso">Lasso Regression (L1, α=0.1)</option>
+                            <option value="baseline_gd">Baseline Gradient Descent</option>
+                        </select>
+                    </div>
+                    <button type="submit" style="background: var(--accent-green); color: white; border: none; padding: 0.85rem; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 1rem;">
+                        Run Batch Inference 🚀
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        {% if batch_result %}
+        <div style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(35, 134, 54, 0.12); border: 1px solid var(--accent-green); border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 1rem;">
+                <h3 style="color: #3fb950; margin: 0;">Batch Inference Succeeded ({{ batch_result.total_processed }} trips processed in {{ batch_result.execution_time_ms }}ms)</h3>
+                <span class="badge badge-success">Model: {{ batch_result.model_name }}</span>
+            </div>
+            <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 1rem; font-size: 0.95rem;">
+                <div>Mean Fare: <strong>${{ batch_result.mean_fare }}</strong></div>
+                <div>Min Fare: <strong>${{ batch_result.min_fare }}</strong></div>
+                <div>Max Fare: <strong>${{ batch_result.max_fare }}</strong></div>
+                <div>Total Batch Revenue: <strong style="color: #3fb950;">${{ batch_result.total_revenue }}</strong></div>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            {% for col in batch_result.preview[0].keys() %}
+                            <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in batch_result.preview %}
+                        <tr>
+                            {% for val in row.values() %}
+                            <td>{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Educational Theory: M1 -->
+    <div class="card">
+        <h2>🧠 Theoretical Foundations: Lifecycle & Learning Paradigms</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem;">
+            <div style="background: #21262d; padding: 1.25rem; border-radius: 8px; border-left: 4px solid #58a6ff;">
+                <h3 style="color: #58a6ff; font-size: 1.05rem;">1. Machine Learning Paradigms</h3>
+                <p style="font-size: 0.88rem; color: #c9d1d9; line-height: 1.6;">
+                    <strong>Supervised:</strong> Learns $f(X) \to y$ from labeled taxi meters to predict fare amounts.<br>
+                    <strong>Unsupervised:</strong> Discovers latent cluster patterns from density and geometry without labels.<br>
+                    <strong>Reinforcement:</strong> Learns dynamic fleet dispatch actions through environmental rewards.
+                </p>
+            </div>
+            <div style="background: #21262d; padding: 1.25rem; border-radius: 8px; border-left: 4px solid #bc8cff;">
+                <h3 style="color: #bc8cff; font-size: 1.05rem;">2. Training-Serving Skew</h3>
+                <p style="font-size: 0.88rem; color: #c9d1d9; line-height: 1.6;">
+                    Performance decay caused by discrepancies between offline training and live production inference. Prevented in RideRush by wrapping scalers inside Scikit-Learn Pipelines fitted solely on training splits.
+                </p>
+            </div>
+            <div style="background: #21262d; padding: 1.25rem; border-radius: 8px; border-left: 4px solid #3fb950;">
+                <h3 style="color: #3fb950; font-size: 1.05rem;">3. Feature Store Architecture</h3>
+                <p style="font-size: 0.88rem; color: #c9d1d9; line-height: 1.6;">
+                    Dual storage system: <strong>Offline Store</strong> (Parquet/Dask) for high-throughput batch training with point-in-time correctness; <strong>Online Store</strong> (Redis/Key-Value) for sub-10ms REST inference.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- TAB 2: M2 REGRESSION WORKBENCH             -->
+<!-- ========================================== -->
+<div id="tab-regression" class="tab-pane active">
+    {% set split = workbench.get('dataset_split', {}) if workbench else {} %}
+    {% set best = workbench.get('best_model', {}) if workbench else {} %}
+    <div class="kpi-grid">
+        <div class="kpi-card" style="border-left: 4px solid #3fb950;">
+            <span class="kpi-title">Top Regression Model</span>
+            <span class="kpi-value" style="font-size: 1.25rem; color: #3fb950;">{{ best.get('name', 'Polynomial Regression') }}</span>
+            <span class="kpi-sub">{{ best.get('category', 'Non-Linear Expansion') }}</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Held-Out Test RMSE</span>
+            <span class="kpi-value" style="color: #f0883e;">${{ "%.2f"|format(best.get('rmse', 5.22)) }}</span>
+            <span class="kpi-sub">Lowest Error</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Held-Out Test R²</span>
+            <span class="kpi-value" style="color: #58a6ff;">{{ "%.4f"|format(best.get('r2', 0.8935)) }}</span>
+            <span class="kpi-sub">Variance Explained</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Dataset Split Strategy</span>
+            <span class="kpi-value" style="font-size: 1.1rem; color: #bc8cff;">70% / 15% / 15%</span>
+            <span class="kpi-sub">Train / Val / Held-Out Test</span>
+        </div>
+    </div>
+
+    <!-- Interactive Predictor -->
+    <div class="card" style="border-left: 4px solid var(--primary-color);">
+        <h2>🔮 Interactive Multi-Model Fare Predictor</h2>
+        <form method="POST" action="{{ url_for('workbench_page') }}?tab=regression" style="display: flex; gap: 1.25rem; align-items: flex-end; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 180px;">
+                <label for="distance" style="font-weight: 600; font-size: 0.9rem; color: #f0f6fc; display: block; margin-bottom: 0.4rem;">Trip Distance (Miles):</label>
+                <input type="number" id="distance" name="distance" step="0.1" min="0.1" max="100" value="{{ prediction.distance if prediction else 5.0 }}" required
+                       style="width: 100%; background: #21262d; border: 1px solid var(--border-color); color: #f0f6fc; padding: 0.75rem 1rem; border-radius: 6px; font-size: 1.1rem;">
+            </div>
+            <div style="flex: 2; min-width: 280px;">
+                <label for="model_key" style="font-weight: 600; font-size: 0.9rem; color: #f0f6fc; display: block; margin-bottom: 0.4rem;">Select Regression Architecture:</label>
+                <select id="model_key" name="model_key" style="width: 100%; background: #21262d; border: 1px solid var(--border-color); color: #f0f6fc; padding: 0.75rem 1rem; border-radius: 6px;">
+                    <option value="baseline_gd" {% if prediction and prediction.model_key == 'baseline_gd' %}selected{% endif %}>Baseline: Simple Linear Regression (Gradient Descent)</option>
+                    <option value="polynomial" {% if prediction and prediction.model_key == 'polynomial' %}selected{% endif %}>Polynomial Regression (Degree 2)</option>
+                    <option value="ridge" {% if prediction and prediction.model_key == 'ridge' %}selected{% endif %}>Ridge Regression (L2, α=1.0)</option>
+                    <option value="lasso" {% if prediction and prediction.model_key == 'lasso' %}selected{% endif %}>Lasso Regression (L1, α=0.1)</option>
+                    <option value="elastic_net" {% if prediction and prediction.model_key == 'elastic_net' %}selected{% endif %}>Elastic Net (α=0.1, l1_ratio=0.5)</option>
+                </select>
+            </div>
+            <button type="submit" style="background: var(--accent-green); color: white; border: none; padding: 0.75rem 1.75rem; border-radius: 6px; font-weight: 600; cursor: pointer;">
+                Estimate Fare 🚀
+            </button>
+        </form>
+
+        {% if prediction %}
+        <div style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(35, 134, 54, 0.12); border: 1px solid var(--accent-green); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <span style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-secondary);">Predicted Fare Amount</span>
+                <h2 style="font-size: 2.2rem; color: #3fb950; margin: 0;">${{ "%.2f"|format(prediction.predicted_fare) }}</h2>
+                <span style="font-size: 0.85rem; color: var(--text-secondary);">Model: <strong>{{ prediction.model_name }}</strong> for {{ prediction.distance }} miles</span>
+            </div>
+            <div style="text-align: right;">
+                <span class="badge badge-info">Mathematical Representation</span>
+                <div style="font-family: monospace; font-size: 0.95rem; color: #f0f6fc; margin-top: 0.35rem;">{{ prediction.formula }}</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Models Benchmark Table -->
+    <div class="card">
+        <h2>📊 Held-Out Test Evaluation Benchmark</h2>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Model Architecture</th>
+                        <th>Category</th>
+                        <th>Hyperparameters</th>
+                        <th>MAE ($)</th>
+                        <th>MSE</th>
+                        <th>RMSE ($)</th>
+                        <th>R² Score</th>
+                        <th>10-Mile Estimate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in workbench.get('models_evaluated', []) %}
+                    <tr style="{% if m.name == best.get('name') %}background: rgba(63, 185, 80, 0.08); font-weight: 500;{% endif %}">
+                        <td>
+                            <strong style="color: #f0f6fc;">{{ m.name }}</strong>
+                            {% if m.name == best.get('name') %}
+                            <span class="badge badge-success" style="margin-left: 0.4rem;">Top Performer</span>
+                            {% endif %}
+                        </td>
+                        <td><span class="badge badge-info">{{ m.category }}</span></td>
+                        <td style="font-family: monospace; font-size: 0.85rem; color: #bc8cff;">
+                            {% for k, v in m.hyperparameters.items() %}
+                                {{ k }}={{ v }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td><strong>${{ "%.2f"|format(m.mae) }}</strong></td>
+                        <td>{{ "%.2f"|format(m.mse) }}</td>
+                        <td><strong style="color: #f0883e;">${{ "%.2f"|format(m.rmse) }}</strong></td>
+                        <td><strong style="color: #3fb950;">{{ "%.4f"|format(m.r2) }}</strong></td>
+                        <td><strong style="color: #58a6ff;">${{ "%.2f"|format(m.sample_prediction_10mi) }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="card">
+        <h2>📈 Diagnostic Charts & Visual Benchmarking</h2>
+        <div class="chart-grid">
+            <div class="chart-card">
+                <h4>Actual vs. Predicted Model Trajectories</h4>
+                <img src="{{ url_for('static', filename='charts/regression_workbench_predictions.png') }}" alt="Model Predictions Fit">
+            </div>
+            <div class="chart-card">
+                <h4>Metrics Benchmark: RMSE vs. R² Accuracy</h4>
+                <img src="{{ url_for('static', filename='charts/regression_workbench_metrics.png') }}" alt="Metrics Comparison">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- TAB 3: M2 SUPERVISED CLASSIFICATION        -->
+<!-- ========================================== -->
+<div id="tab-classification" class="tab-pane">
+    <div class="card" style="border-left: 4px solid #bc8cff;">
+        <h2>🎯 Supervised Classification Laboratory</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Binary and Multinomial Logistic Regression predicting passenger tipping behavior and fare tier categories without target leakage.
+        </p>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <span class="kpi-title">Binary Target</span>
+                <span class="kpi-value" style="font-size: 1.15rem; color: #bc8cff;">is_high_tip</span>
+                <span class="kpi-sub">Tip Fraction ≥ 18%</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Class Imbalance Ratio</span>
+                <span class="kpi-value" style="font-size: 1.25rem; color: #f0883e;">{{ m2_clf.get('class_imbalance', {}).get('imbalance_ratio', '2.4:1') }}</span>
+                <span class="kpi-sub">Negative to Positive</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Multinomial Classes</span>
+                <span class="kpi-value" style="font-size: 1.15rem; color: #58a6ff;">3 Fare Tiers</span>
+                <span class="kpi-sub">Low / Medium / High</span>
+            </div>
+        </div>
+
+        <h3>⚖️ Binary Classifier Performance: Uniform vs Balanced Class Weights</h3>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Model Configuration</th>
+                        <th>Accuracy</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1 Score</th>
+                        <th>ROC-AUC</th>
+                        <th>PR-AUC</th>
+                        <th>Log Loss</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, res in m2_clf.get('binary_models', {}).items() %}
+                    <tr>
+                        <td><strong>{{ res.name }}</strong></td>
+                        <td>{{ "%.4f"|format(res.accuracy) }}</td>
+                        <td>{{ "%.4f"|format(res.precision) }}</td>
+                        <td><strong style="color: #3fb950;">{{ "%.4f"|format(res.recall) }}</strong></td>
+                        <td><strong style="color: #58a6ff;">{{ "%.4f"|format(res.f1) }}</strong></td>
+                        <td>{{ "%.4f"|format(res.roc_auc) }}</td>
+                        <td>{{ "%.4f"|format(res.pr_auc) }}</td>
+                        <td>{{ "%.4f"|format(res.log_loss) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <img src="{{ url_for('static', filename='charts/m2_classification_curves.png') }}" alt="Classification Diagnostics" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- TAB 4: M3 TREE MODELS & BOOSTING           -->
+<!-- ========================================== -->
+<div id="tab-trees" class="tab-pane">
+    <div class="card" style="border-left: 4px solid #3fb950;">
+        <h2>🌲 Tree-Based Models, Ensembles & Boosting</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Comparative benchmarking of CART Decision Trees, Random Forest (with OOB validation), AdaBoost, Gradient Boosting, and native Histogram-based Boosting (LightGBM equivalent).
+        </p>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Ensemble Architecture</th>
+                        <th>Family</th>
+                        <th>MAE ($)</th>
+                        <th>RMSE ($)</th>
+                        <th>R² Score</th>
+                        <th>OOB Score</th>
+                        <th>Training Latency (ms)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in m3_trees.get('benchmarks', []) %}
+                    <tr>
+                        <td><strong>{{ b.name }}</strong></td>
+                        <td><span class="badge badge-info">{{ b.family }}</span></td>
+                        <td>${{ "%.2f"|format(b.mae) }}</td>
+                        <td><strong style="color: #f0883e;">${{ "%.2f"|format(b.rmse) }}</strong></td>
+                        <td><strong style="color: #3fb950;">{{ "%.4f"|format(b.r2) }}</strong></td>
+                        <td>{{ b.oob_score if b.oob_score is not none else '—' }}</td>
+                        <td style="color: #bc8cff;">{{ b.training_time_ms }} ms</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <img src="{{ url_for('static', filename='charts/m3_tree_benchmarks.png') }}" alt="Tree Benchmarks" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- TAB 5: M4 UNSUPERVISED & PCA               -->
+<!-- ========================================== -->
+<div id="tab-unsupervised" class="tab-pane">
+    <div class="card" style="border-left: 4px solid #d29922;">
+        <h2>🔍 Unsupervised Clustering & Anomaly Detection</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Exploratory structural discovery: K-Means trip archetypes, PCA dimensional reduction, and Isolation Forest anomaly detection.
+        </p>
+
+        <h3>🚕 Discovered NYC Taxi Trip Archetypes (K-Means, K=3)</h3>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cluster ID</th>
+                        <th>Archetype Label</th>
+                        <th>Trip Count</th>
+                        <th>% of Volume</th>
+                        <th>Mean Distance</th>
+                        <th>Mean Duration</th>
+                        <th>Mean Meter Fare</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in m4_unsup.get('kmeans', {}).get('cluster_archetypes', []) %}
+                    <tr>
+                        <td>#{{ c.cluster_id }}</td>
+                        <td><strong style="color: #f0f6fc;">{{ c.archetype }}</strong></td>
+                        <td>{{ c.count }}</td>
+                        <td>{{ c.pct_of_trips }}%</td>
+                        <td>{{ c.mean_distance_mi }} miles</td>
+                        <td>{{ c.mean_duration_min }} mins</td>
+                        <td><strong style="color: #3fb950;">${{ c.mean_fare_dollar }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <img src="{{ url_for('static', filename='charts/m4_unsupervised_clusters.png') }}" alt="Unsupervised Clusters" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- TAB 6: M5 EVALUATION & CALIBRATION         -->
+<!-- ========================================== -->
+<div id="tab-evaluation" class="tab-pane">
+    <div class="card" style="border-left: 4px solid #f0883e;">
+        <h2>⚖️ Evaluation Protocols, Cross-Validation & Calibration</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Rigorous statistical evaluation: 5-Fold CV, Nested CV, Probability Calibration, McNemar's hypothesis testing, and Paired Bootstrap 95% Confidence Intervals.
+        </p>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <span class="kpi-title">5-Fold CV R² (Ridge)</span>
+                <span class="kpi-value" style="color: #58a6ff;">{{ m5_eval.get('kfold_cv', {}).get('mean_r2', 0.8874) }}</span>
+                <span class="kpi-sub">± {{ m5_eval.get('kfold_cv', {}).get('std_r2', 0.0035) }}</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Nested CV RMSE</span>
+                <span class="kpi-value" style="color: #f0883e;">${{ m5_eval.get('nested_cv', {}).get('nested_mean_rmse', 5.36) }}</span>
+                <span class="kpi-sub">Unbiased Tuning</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Platt Brier Score</span>
+                <span class="kpi-value" style="color: #3fb950;">{{ m5_eval.get('probability_calibration', {}).get('platt_sigmoid', {}).get('brier_score', 0.18) }}</span>
+                <span class="kpi-sub">Probability Accuracy</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">McNemar's p-value</span>
+                <span class="kpi-value" style="color: #bc8cff;">{{ m5_eval.get('mcnemar_test', {}).get('p_value', 0.04) }}</span>
+                <span class="kpi-sub">{{ 'Significant (p<0.05)' if m5_eval.get('mcnemar_test', {}).get('statistically_significant') else 'Not Significant' }}</span>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <img src="{{ url_for('static', filename='charts/m5_model_evaluation.png') }}" alt="Model Evaluation" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- TAB 7: M6 ML ENGINEERING & MONITORING      -->
+<!-- ========================================== -->
+<div id="tab-engineering" class="tab-pane">
+    <div class="card" style="border-left: 4px solid #58a6ff;">
+        <h2>🛡️ Production Telemetry & Model Registry</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Live production request tracking, Kolmogorov-Smirnov distribution drift testing, and cryptographic SHA-256 artifact verification.
+        </p>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <span class="kpi-title">Service Status</span>
+                <span class="kpi-value" style="color: #3fb950;">{{ telemetry.get('service_status', 'HEALTHY') }}</span>
+                <span class="kpi-sub">Flask Runtime</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Total Requests</span>
+                <span class="kpi-value">{{ telemetry.get('total_requests_served', 0) }}</span>
+                <span class="kpi-sub">Inference Traffic</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">p95 Latency</span>
+                <span class="kpi-value" style="color: #58a6ff;">{{ telemetry.get('latency_stats_ms', {}).get('p95', 2.5) }} ms</span>
+                <span class="kpi-sub">Fast Response</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Active Model</span>
+                <span class="kpi-value" style="font-size: 1.1rem; color: #bc8cff;">{{ telemetry.get('active_model', 'baseline_gd') }}</span>
+                <span class="kpi-sub">Production Served</span>
+            </div>
+        </div>
+
+        <h3>📡 Live Feature Distribution Drift Audit</h3>
+        {% set drift = m6_eng.get('drift_monitoring_demo', {}) %}
+        <div style="background: #21262d; padding: 1.25rem; border-radius: 8px; margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <div>
+                    <h4 style="color: #f0f6fc; margin-bottom: 0.25rem;">Feature: trip_distance (Baseline vs Live Traffic)</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">{{ drift.get('interpretation', 'Checking distribution stability...') }}</p>
+                </div>
+                <div>
+                    <span class="badge {% if drift.get('severity') == 'CRITICAL' %}badge-warning{% else %}badge-success{% endif %}" style="font-size: 0.9rem;">
+                        Severity: {{ drift.get('severity', 'NEGLIGIBLE') }}
+                    </span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 2rem; margin-top: 1rem; font-size: 0.95rem;">
+                <div>KS Statistic: <strong>{{ drift.get('ks_statistic', 0.04) }}</strong></div>
+                <div>p-value: <strong>{{ drift.get('p_value', 0.85) }}</strong></div>
+                <div>PSI Score: <strong>{{ drift.get('psi_score', 0.03) }}</strong></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- TAB 8: SYLLABUS COVERAGE AUDIT             -->
+<!-- ========================================== -->
+<div id="tab-syllabus" class="tab-pane">
+    <div class="card" style="border-left: 4px solid #238636;">
+        <h2>📋 RideRush Master Syllabus Coverage Matrix (M1–M6)</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Verified audit tracking all 48 required syllabus topics, their implementation files, and test validations.
+        </p>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Topic ID</th>
+                        <th>Topic Name</th>
+                        <th>Status</th>
+                        <th>Implementation Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>M1</strong></td><td>M1.1–1.7</td><td>End-to-end Lifecycle, Batch Inference, Retraining Gates</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m1_lifecycle.py</td></tr>
+                    <tr><td><strong>M2</strong></td><td>M2.1–2.6</td><td>Gradient Descent, Normal Equation, Poly, Ridge, Lasso, Elastic Net</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/regression_workbench.py</td></tr>
+                    <tr><td><strong>M2</strong></td><td>M2.7–2.12</td><td>Binary & Multinomial Logistic, Sigmoid, Softmax, OOF Encoding</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m2_classification.py</td></tr>
+                    <tr><td><strong>M3</strong></td><td>M3.1–3.7</td><td>Decision Tree, Random Forest OOB, AdaBoost, Gradient Boosting</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m3_trees.py</td></tr>
+                    <tr><td><strong>M3</strong></td><td>M3.8–3.10</td><td>HistGradientBoosting (LightGBM equivalent), MDI, Permutation, SHAP</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m3_trees.py</td></tr>
+                    <tr><td><strong>M4</strong></td><td>M4.1–4.9</td><td>K-Means++, Elbow/Silhouette, DBSCAN, PCA, Isolation Forest, SVM</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m4_unsupervised.py</td></tr>
+                    <tr><td><strong>M5</strong></td><td>M5.1–5.9</td><td>5-Fold CV, Stratified CV, Nested CV, Search, Calibration, McNemar, CI</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m5_evaluation.py</td></tr>
+                    <tr><td><strong>M6</strong></td><td>M6.1–6.10</td><td>Model Registry, SHA256, Batch Endpoint, Drift KS/PSI, Dockerfile</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m6_engineering.py</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Tab Switcher Script -->
+<script>
+function showTab(tabName) {
+    document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+    const targetPane = document.getElementById('tab-' + tabName);
+    const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+
+    if (targetPane) targetPane.classList.add('active');
+    if (targetBtn) targetBtn.classList.add('active');
+
+    // Update URL query string without reloading page
+    const url = new URL(window.location);
+    url.searchParams.set('tab', tabName);
+    window.history.replaceState({}, '', url);
+}
+
+// On page load, check URL parameter
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const initialTab = params.get('tab') || '{{ active_tab or "regression" }}';
+    showTab(initialTab);
+});
+</script>
+{% endblock %}

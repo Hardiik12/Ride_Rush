@@ -1,0 +1,755 @@
+{% extends "base.html" %}
+
+{% block title %}EDA Dashboard — NYC Taxi Big Data{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Phase 5 — Exploratory Data Analysis (EDA) & CO1 Audit</h1>
+    <p>Comprehensive univariate, temporal, financial, location, correlation, outlier, and missing value exploration</p>
+</div>
+
+<!-- Section Navigation Bar -->
+<div class="card" style="padding: 1rem;">
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.85rem;">
+        <a href="#overview" class="badge badge-info" style="text-decoration: none;">Overview</a>
+        <a href="#time" class="badge badge-info" style="text-decoration: none;">Time Analysis</a>
+        <a href="#distance" class="badge badge-info" style="text-decoration: none;">Distance Analysis</a>
+        <a href="#duration" class="badge badge-info" style="text-decoration: none;">Duration Analysis</a>
+        <a href="#fare" class="badge badge-info" style="text-decoration: none;">Fare Analysis</a>
+        <a href="#passenger" class="badge badge-info" style="text-decoration: none;">Passenger Analysis</a>
+        <a href="#payment" class="badge badge-info" style="text-decoration: none;">Payment Analysis</a>
+        <a href="#location" class="badge badge-info" style="text-decoration: none;">Location Analysis</a>
+        <a href="#correlation" class="badge badge-info" style="text-decoration: none;">Correlation Analysis</a>
+        <a href="#outliers" class="badge badge-warning" style="text-decoration: none;">Outlier Analysis (CO1)</a>
+        <a href="#missing-values" class="badge badge-warning" style="text-decoration: none;">Missing Values (CO1)</a>
+        <a href="#scaling" class="badge badge-warning" style="text-decoration: none;">Feature Scaling (CO1)</a>
+        <a href="#duplicates" class="badge badge-warning" style="text-decoration: none;">Duplicate Records (CO1)</a>
+    </div>
+</div>
+
+<!-- 1. Overview -->
+<div id="overview" class="card">
+    <h2>1. EDA Overview</h2>
+    <p>Exploratory Data Analysis evaluates patterns across 2,816,149 cleaned yellow taxi records for January 2025. Charts were generated using Dask chunked aggregations and 5% representative sampling to ensure zero Out-Of-Memory (OOM) risks.</p>
+</div>
+
+<!-- 2. Time Analysis -->
+<div id="time" class="card">
+    <h2>2. Time-Based Analysis</h2>
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h4>Trips by Hour of Day</h4>
+            <img src="{{ url_for('static', filename='charts/trips_by_hour.png') }}" alt="Trips by Hour">
+        </div>
+        <div class="chart-card">
+            <h4>Trips by Day of Week</h4>
+            <img src="{{ url_for('static', filename='charts/trips_by_day.png') }}" alt="Trips by Day">
+        </div>
+    </div>
+    <div class="chart-card" style="margin-top: 1.5rem; width: 100%;">
+        <h4>Daily Taxi Trip Volume (January 2025)</h4>
+        <img src="{{ url_for('static', filename='charts/trips_by_date.png') }}" alt="Trips by Date">
+    </div>
+</div>
+
+<!-- 3. Distance Analysis -->
+<div id="distance" class="card">
+    <h2>3. Trip Distance Analysis</h2>
+    <div class="chart-card">
+        <h4>Trip Distance Distribution</h4>
+        <img src="{{ url_for('static', filename='charts/trip_distance_distribution.png') }}" alt="Trip Distance Distribution">
+    </div>
+</div>
+
+<!-- 4. Duration Analysis -->
+<div id="duration" class="card">
+    <h2>4. Trip Duration Analysis</h2>
+    <div class="chart-card">
+        <h4>Trip Duration Distribution</h4>
+        <img src="{{ url_for('static', filename='charts/trip_duration_distribution.png') }}" alt="Trip Duration Distribution">
+    </div>
+</div>
+
+<!-- 5. Fare Analysis -->
+<div id="fare" class="card">
+    <h2>5. Fare & Financial Analysis</h2>
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h4>Fare Amount Distribution</h4>
+            <img src="{{ url_for('static', filename='charts/fare_distribution.png') }}" alt="Fare Distribution">
+        </div>
+        <div class="chart-card">
+            <h4>Fare Amount vs. Trip Distance Density</h4>
+            <img src="{{ url_for('static', filename='charts/fare_vs_distance.png') }}" alt="Fare vs Distance">
+        </div>
+    </div>
+</div>
+
+<!-- 6. Passenger Analysis -->
+<div id="passenger" class="card">
+    <h2>6. Passenger Count Analysis</h2>
+    <div class="chart-card">
+        <h4>Passenger Count Distribution</h4>
+        <img src="{{ url_for('static', filename='charts/passenger_distribution.png') }}" alt="Passenger Distribution">
+    </div>
+</div>
+
+<!-- 7. Payment Analysis -->
+<div id="payment" class="card">
+    <h2>7. Payment Type Analysis</h2>
+    <div class="chart-card">
+        <h4>Payment Type Share</h4>
+        <img src="{{ url_for('static', filename='charts/payment_distribution.png') }}" alt="Payment Distribution">
+    </div>
+</div>
+
+<!-- 8. Location Analysis -->
+<div id="location" class="card">
+    <h2>8. Pickup & Drop-off Location Analysis</h2>
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h4>Top 10 Pickup TLC Zones</h4>
+            <img src="{{ url_for('static', filename='charts/top_pickup_locations.png') }}" alt="Top Pickup Locations">
+        </div>
+        <div class="chart-card">
+            <h4>Top 10 Drop-off TLC Zones</h4>
+            <img src="{{ url_for('static', filename='charts/top_dropoff_locations.png') }}" alt="Top Dropoff Locations">
+        </div>
+    </div>
+</div>
+
+<!-- 9. Correlation Analysis -->
+<div id="correlation" class="card">
+    <h2>9. Correlation Matrix Heatmap</h2>
+    <div class="chart-card">
+        <h4>Pearson Correlation Matrix</h4>
+        <img src="{{ url_for('static', filename='charts/correlation_heatmap.png') }}" alt="Correlation Heatmap">
+    </div>
+</div>
+
+<!-- 10. CO1 Outlier Analysis & Treatment Strategies -->
+<div id="outliers" class="card" style="border-left: 4px solid var(--accent-orange);">
+    <h2>10. Outlier Analysis & Treatment Strategies (CO1 Syllabus)</h2>
+    <p style="margin-bottom: 1rem;">
+        Statistical outliers are identified using the Interquartile Range (IQR) method:
+        <code>IQR = Q3 - Q1</code>, <code>Lower Bound = Q1 - 1.5 × IQR</code>, and <code>Upper Bound = Q3 + 1.5 × IQR</code>.
+    </p>
+
+    <!-- Outlier Identification Table -->
+    <h3>A. Outlier Identification (IQR Method)</h3>
+    {% set iqr_rows = outlier_data.get('iqr_table', outliers) if outlier_data else outliers %}
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>Q1 (25%)</th>
+                    <th>Q2 / Median (50%)</th>
+                    <th>Q3 (75%)</th>
+                    <th>IQR</th>
+                    <th>Lower Bound</th>
+                    <th>Upper Bound</th>
+                    <th>Potential Outliers</th>
+                    <th>Outlier %</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in iqr_rows %}
+                <tr>
+                    <td><strong>{{ item.variable }}</strong></td>
+                    <td>{{ item.q1 }}</td>
+                    <td>{{ item.median if item.median is defined else '-' }}</td>
+                    <td>{{ item.q3 }}</td>
+                    <td>{{ item.iqr }}</td>
+                    <td>{{ item.lower_bound }}</td>
+                    <td>{{ item.upper_bound }}</td>
+                    <td>{{ "{:,}".format(item.potential_outliers) }}</td>
+                    <td>{{ item.outlier_pct }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Numerical Feature Boxplots -->
+    <h3 style="margin-top: 2rem;">B. Feature Outlier Boxplot Visualizations</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+        Boxplots display the median line (Q2), IQR box boundaries (Q1 to Q3), whiskers (Lower/Upper bounds), and individual outlier points.
+    </p>
+    <div class="chart-card" style="width: 100%;">
+        <h4>Numerical Feature Boxplots (IQR Method)</h4>
+        <img src="{{ url_for('static', filename='charts/outlier_boxplots.png') }}" alt="Numerical Feature Boxplots">
+    </div>
+
+    <!-- Outlier Treatment Method Comparisons -->
+    <h3 style="margin-top: 2rem;">C. Comparison of Outlier Treatment Approaches</h3>
+    <p style="margin-bottom: 1rem;">
+        Comparing the 3 core statistical outlier handling strategies across the NYC Taxi dataset:
+    </p>
+    {% if outlier_data and outlier_data.treatments %}
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Treatment Approach</th>
+                    <th>Records Removed</th>
+                    <th>Data Preserved</th>
+                    <th>Analytical Effect</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in outlier_data.treatments.method_comparison_table %}
+                <tr>
+                    <td><strong>{{ row.method }}</strong></td>
+                    <td>{{ row.records_removed }}</td>
+                    <td><span class="badge badge-success">{{ row.data_preserved_pct }}</span></td>
+                    <td>{{ row.effect }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Winsorization Impact Table -->
+    <h3 style="margin-top: 2rem;">D. Winsorization Capping Impact Analysis</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+        Winsorization caps values below Lower Bound at Lower Bound and values above Upper Bound at Upper Bound without discarding records:
+    </p>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>Mean (Before)</th>
+                    <th>Mean (After Winsorizing)</th>
+                    <th>Median (Before)</th>
+                    <th>Median (After Winsorizing)</th>
+                    <th>Std Dev (Before)</th>
+                    <th>Std Dev (After Winsorizing)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in outlier_data.treatments.winsorize_comparison %}
+                <tr>
+                    <td><strong>{{ row.variable }}</strong></td>
+                    <td>{{ row.mean_before }}</td>
+                    <td style="color: #3fb950; font-weight: 600;">{{ row.mean_after }}</td>
+                    <td>{{ row.median_before }}</td>
+                    <td>{{ row.median_after }}</td>
+                    <td>{{ row.std_before }}</td>
+                    <td style="color: #58a6ff;">{{ row.std_after }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- Strategy Selection Educational Guidelines -->
+    <div class="alert-box" style="margin-top: 1.5rem;">
+        <h4 style="color: #f0883e; margin-bottom: 0.5rem;">Analytical Selection Guidelines:</h4>
+        <ul style="margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <li><strong>Remove Outliers:</strong> Appropriate when observations stem from corrupt recording sensors or impossible data entry errors.</li>
+            <li><strong>Retain Outliers:</strong> Recommended for NYC Taxi analysis because extreme values (e.g., JFK airport trips or long borough journeys) represent real, valid commercial transactions.</li>
+            <li><strong>Winsorize Outliers:</strong> Ideal when extreme values are legitimate but would excessively skew gradient-based ML algorithms.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 11. CO1 — Missing Value Analysis & Imputation Techniques -->
+<div id="missing-values" class="card" style="border-left: 4px solid var(--primary-color);">
+    <h2>11. Missing Value Analysis & Imputation Techniques (CO1 Syllabus)</h2>
+    <p style="margin-bottom: 1rem;">
+        Comprehensive evaluation of missing value mechanisms (MCAR, MAR, MNAR), deletion strategies, mean/median imputation, advanced model-based imputation (KNN, MICE), missing indicators, and data leakage prevention.
+    </p>
+
+    {% if missing_value_data and missing_value_data.audit %}
+    <!-- A. Missing Value Audit Table -->
+    <h3>A. Missing Value Audit (Cleaned Dataset)</h3>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Column Name</th>
+                    <th>Data Type</th>
+                    <th>Missing Count</th>
+                    <th>Missing Percentage (%)</th>
+                    <th>Non-Missing Count</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in missing_value_data.audit.audit_table %}
+                <tr>
+                    <td><strong>{{ item.column }}</strong></td>
+                    <td><code>{{ item.dtype }}</code></td>
+                    <td>{{ "{:,}".format(item.missing_count) }}</td>
+                    <td>{{ item.missing_pct }}%</td>
+                    <td>{{ "{:,}".format(item.non_missing_count) }}</td>
+                    <td>
+                        {% if item.missing_count == 0 %}
+                        <span class="badge badge-success">Complete (0% missing)</span>
+                        {% else %}
+                        <span class="badge badge-warning">Nulls Present</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Missing Values Chart -->
+    <div class="chart-card" style="margin-top: 1.5rem; width: 100%;">
+        <h4>Missing Value Percentage by Feature Column</h4>
+        <img src="{{ url_for('static', filename='charts/missing_values.png') }}" alt="Missing Values Chart">
+    </div>
+
+    <!-- B. MCAR / MAR / MNAR Explanation Cards -->
+    <h3 style="margin-top: 2rem;">B. Missing Data Mechanisms (MCAR, MAR, MNAR)</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+        {% for mech in missing_value_data.mechanisms %}
+        <div style="background: #21262d; padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-color);">
+            <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">{{ mech.mechanism }}</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">{{ mech.definition }}</p>
+            <span style="font-size: 0.8rem; color: var(--accent-orange); font-style: italic;"><strong>NYC Taxi Context:</strong> {{ mech.taxi_context }}</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- C. Deletion Strategies -->
+    <h3 style="margin-top: 2rem;">C. Deletion Strategies (Row & Column Deletion)</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+        <div style="background: #21262d; padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-color);">
+            <h4>1. Listwise Row Deletion</h4>
+            <ul style="font-size: 0.9rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                <li><strong>Original Rows:</strong> {{ "{:,}".format(missing_value_data.row_deletion.original_rows) }}</li>
+                <li><strong>Rows Removed:</strong> {{ "{:,}".format(missing_value_data.row_deletion.removed_rows) }}</li>
+                <li><strong>Remaining Rows:</strong> {{ "{:,}".format(missing_value_data.row_deletion.remaining_rows) }}</li>
+                <li><strong>Retention %:</strong> <span class="badge badge-success">{{ missing_value_data.row_deletion.retention_pct }}%</span></li>
+            </ul>
+        </div>
+        <div style="background: #21262d; padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-color);">
+            <h4>2. Column Deletion</h4>
+            <ul style="font-size: 0.9rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                <li><strong>Original Columns:</strong> {{ missing_value_data.column_deletion.original_columns_count }}</li>
+                <li><strong>Columns Removed:</strong> {{ missing_value_data.column_deletion.removed_columns_count }}</li>
+                <li><strong>Retained Columns:</strong> {{ missing_value_data.column_deletion.retained_columns_count }}</li>
+                <li><strong>Removed List:</strong> {{ missing_value_data.column_deletion.removed_columns if missing_value_data.column_deletion.removed_columns else 'None' }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- D. Imputation Techniques (Mean vs. Median) -->
+    <h3 style="margin-top: 2rem;">D. Univariate Imputation (Mean vs. Median)</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+        <div class="table-container">
+            <h4>Mean Imputation (x_missing = mean(x))</h4>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Column</th><th>Missing Before</th><th>Missing After</th><th>Mean Used</th></tr>
+                </thead>
+                <tbody>
+                    {% for row in missing_value_data.mean_imputation %}
+                    <tr>
+                        <td><strong>{{ row.column }}</strong></td>
+                        <td>{{ row.missing_before }}</td>
+                        <td>{{ row.missing_after }}</td>
+                        <td>{{ row.computed_mean }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="table-container">
+            <h4>Median Imputation (x_missing = median(x))</h4>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Column</th><th>Missing Before</th><th>Missing After</th><th>Median Used</th></tr>
+                </thead>
+                <tbody>
+                    {% for row in missing_value_data.median_imputation %}
+                    <tr>
+                        <td><strong>{{ row.column }}</strong></td>
+                        <td>{{ row.missing_before }}</td>
+                        <td>{{ row.missing_after }}</td>
+                        <td>{{ row.computed_median }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- E. Advanced Model-Based Imputation (KNN & MICE) -->
+    <h3 style="margin-top: 2rem;">E. Advanced Model-Based Imputation (KNN & MICE Iterative)</h3>
+    <div class="alert-box">
+        <strong>Big Data Sampling Note:</strong> Demonstration performed on a representative sample (n={{ "{:,}".format(missing_value_data.knn_imputation.sample_size) }}) because KNN and Iterative/MICE imputation are $O(N^2)$ memory-intensive for multi-million-row datasets.
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+        <div style="background: #21262d; padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-color);">
+            <h4>1. KNN Imputation (KNNImputer)</h4>
+            <ul style="font-size: 0.9rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                <li><strong>Sample Size:</strong> {{ "{:,}".format(missing_value_data.knn_imputation.sample_size) }} rows</li>
+                <li><strong>Neighbors (k):</strong> {{ missing_value_data.knn_imputation.n_neighbors }}</li>
+                <li><strong>Missing Before:</strong> {{ missing_value_data.knn_imputation.missing_before }}</li>
+                <li><strong>Missing After:</strong> {{ missing_value_data.knn_imputation.missing_after }}</li>
+            </ul>
+        </div>
+        <div style="background: #21262d; padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-color);">
+            <h4>2. Iterative / MICE Imputation (IterativeImputer)</h4>
+            <ul style="font-size: 0.9rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                <li><strong>Sample Size:</strong> {{ "{:,}".format(missing_value_data.iterative_imputation.sample_size) }} rows</li>
+                <li><strong>Max Iterations:</strong> {{ missing_value_data.iterative_imputation.max_iterations }}</li>
+                <li><strong>Missing Before:</strong> {{ missing_value_data.iterative_imputation.missing_before }}</li>
+                <li><strong>Missing After:</strong> {{ missing_value_data.iterative_imputation.missing_after }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- F. Missing Indicators -->
+    <h3 style="margin-top: 2rem;">F. Missing Indicators (Pattern Tracking)</h3>
+    <p style="margin-bottom: 0.75rem; color: var(--text-secondary);">
+        Missing indicator binary columns (1 = missing, 0 = present) preserve missingness signal for predictive ML models:
+    </p>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Original Feature</th>
+                    <th>Generated Indicator Name</th>
+                    <th>Missing Indicator = 1 (Missing)</th>
+                    <th>Missing Indicator = 0 (Present)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in missing_value_data.missing_indicators %}
+                <tr>
+                    <td><strong>{{ row.original_column }}</strong></td>
+                    <td><code>{{ row.indicator_column }}</code></td>
+                    <td>{{ row.missing_indicator_ones }}</td>
+                    <td>{{ row.missing_indicator_zeros }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- G. Data Leakage Prevention Card -->
+    <div class="alert-box" style="margin-top: 1.5rem; border-left-color: #f85149;">
+        <h4 style="color: #f85149; margin-bottom: 0.5rem;">⚠️ Data Leakage Prevention in Imputation</h4>
+        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+            Calculating imputation statistics (mean, median, KNN weights) across the entire dataset before train/test splitting leaks test set information into model training.
+        </p>
+        <div style="font-family: monospace; font-size: 0.85rem; background: #0d1117; padding: 0.75rem; border-radius: 6px; color: #3fb950;">
+            # Correct Pipeline Pattern:<br>
+            imputer.fit(X_train)<br>
+            X_train_imputed = imputer.transform(X_train)<br>
+            X_test_imputed = imputer.transform(X_test)
+        </div>
+    </div>
+
+    <!-- H. Method Comparison Matrix -->
+    <h3 style="margin-top: 2rem;">H. Method Comparison Matrix</h3>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Data Loss</th>
+                    <th>Computational Cost</th>
+                    <th>Key Advantages</th>
+                    <th>Key Disadvantages</th>
+                    <th>When to Use</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in missing_value_data.comparison_table %}
+                <tr>
+                    <td><strong>{{ row.method }}</strong></td>
+                    <td>{{ row.data_loss }}</td>
+                    <td>{{ row.computational_cost }}</td>
+                    <td style="color: #3fb950;">{{ row.advantages }}</td>
+                    <td style="color: #f0883e;">{{ row.disadvantages }}</td>
+                    <td>{{ row.when_to_use }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+
+<!-- 12. CO1 — Feature Scaling & Normalization Analysis -->
+<div id="scaling" class="card" style="margin-top: 2rem;">
+    <h2>12. CO1 — Feature Scaling & Normalization Analysis</h2>
+    <p>Comprehensive evaluation of StandardScaler (Z-score), MinMaxScaler, and RobustScaler on skewed NYC Taxi numerical distributions, accompanied by strict data leakage prevention and model selection guidelines.</p>
+
+    {% if scaling_data %}
+    <!-- A. Scaler Conceptual Cards -->
+    <h3 style="margin-top: 1.5rem;">A. Feature Scaling Fundamentals & Outlier Interactions</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+        <!-- StandardScaler -->
+        <div class="card" style="background: #161b22; border-left: 4px solid #3fb950; margin-bottom: 0;">
+            <h4 style="color: #3fb950; margin-bottom: 0.25rem;">StandardScaler (Z-Score)</h4>
+            <div style="font-family: monospace; font-size: 0.9rem; background: #0d1117; padding: 0.4rem; border-radius: 4px; margin: 0.5rem 0;">
+                z = (x - μ) / σ
+            </div>
+            <p style="font-size: 0.85rem; color: #8b949e;"><strong>Center / Spread:</strong> Mean = 0, Std Dev = 1</p>
+            <p style="font-size: 0.85rem; color: #8b949e;"><strong>Range:</strong> Unbounded (-∞, +∞)</p>
+            <p style="font-size: 0.85rem; color: #f0883e;"><strong>Outlier Sensitivity: High</strong> — Outliers heavily distort the sample mean and inflate variance, compressing regular trips into an artificial cluster near zero.</p>
+        </div>
+
+        <!-- MinMaxScaler -->
+        <div class="card" style="background: #161b22; border-left: 4px solid #d29922; margin-bottom: 0;">
+            <h4 style="color: #d29922; margin-bottom: 0.25rem;">MinMaxScaler (Normalization)</h4>
+            <div style="font-family: monospace; font-size: 0.9rem; background: #0d1117; padding: 0.4rem; border-radius: 4px; margin: 0.5rem 0;">
+                x' = (x - x_min) / (x_max - x_min)
+            </div>
+            <p style="font-size: 0.85rem; color: #8b949e;"><strong>Center / Spread:</strong> Bounded scale</p>
+            <p style="font-size: 0.85rem; color: #8b949e;"><strong>Range:</strong> Strictly [0, 1]</p>
+            <p style="font-size: 0.85rem; color: #f85149;"><strong>Outlier Sensitivity: Severe</strong> — Extreme values establish the global min and max. For example, a $450 airport ride forces 95% of typical $15 rides into [0.0, 0.05].</p>
+        </div>
+
+        <!-- RobustScaler -->
+        <div class="card" style="background: #161b22; border-left: 4px solid #bc8cff; margin-bottom: 0;">
+            <h4 style="color: #bc8cff; margin-bottom: 0.25rem;">RobustScaler (Median & IQR)</h4>
+            <div style="font-family: monospace; font-size: 0.9rem; background: #0d1117; padding: 0.4rem; border-radius: 4px; margin: 0.5rem 0;">
+                x' = (x - Median) / IQR
+            </div>
+            <p style="font-size: 0.85rem; color: #8b949e;"><strong>Center / Spread:</strong> Median = 0, IQR = 1</p>
+            <p style="font-size: 0.85rem; color: #8b949e;"><strong>Range:</strong> Unbounded (-∞, +∞)</p>
+            <p style="font-size: 0.85rem; color: #3fb950;"><strong>Outlier Sensitivity: Low / Robust</strong> — Uses the 50th percentile and interquartile range (Q3-Q1). Extreme values cannot distort the core spread, making it ideal for taxi trip data.</p>
+        </div>
+    </div>
+
+    <!-- B. Comparative Visualization -->
+    <h3 style="margin-top: 2rem;">B. Distribution Comparison Across Scalers</h3>
+    <p style="font-size: 0.9rem; color: #8b949e;">Visualizing the transformation of skewed trip distance and fare amount distributions under each scaling strategy:</p>
+    <div class="chart-card" style="width: 100%; margin-top: 1rem;">
+        <img src="{{ url_for('static', filename='charts/' + scaling_data.chart) }}" alt="Feature Scaling Comparison">
+    </div>
+
+    <!-- C. Distribution Summary Table -->
+    <h3 style="margin-top: 2rem;">C. Before & After Distribution Statistics</h3>
+    <p style="font-size: 0.9rem; color: #8b949e;">
+        Demonstration performed on an isolated 80% training sample ({{ scaling_data.train_size }} records) of the representative dataset to verify statistical properties without full dataset loading.
+    </p>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Raw Mean (Std)</th>
+                    <th>Raw Median [IQR]</th>
+                    <th>Raw [Min, Max]</th>
+                    <th>StandardScaler [μ=0, σ=1]</th>
+                    <th>MinMaxScaler [0, 1]</th>
+                    <th>RobustScaler [Med=0, IQR=1]</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in scaling_data.feature_summary %}
+                <tr>
+                    <td><strong>{{ row.feature }}</strong></td>
+                    <td>{{ row.original_mean }} (±{{ row.original_std }})</td>
+                    <td>{{ row.original_median }} [{{ row.original_iqr }}]</td>
+                    <td>[{{ row.original_min }}, {{ row.original_max }}]</td>
+                    <td>μ={{ row.std_mean }}, σ={{ row.std_std }}<br><small>[{{ row.std_min }}, {{ row.std_max }}]</small></td>
+                    <td>[{{ row.minmax_min }}, {{ row.minmax_max }}]<br><small>μ={{ row.minmax_mean }}</small></td>
+                    <td>Med={{ row.robust_median }}, IQR={{ row.robust_iqr }}<br><small>[{{ row.robust_min }}, {{ row.robust_max }}]</small></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- D. Data Leakage Card -->
+    <div class="alert-box" style="margin-top: 2rem; border-left-color: #f85149;">
+        <h4 style="color: #f85149; margin-bottom: 0.5rem;">⚠️ Data Leakage Prevention: Training-Only Scaler Fitting</h4>
+        <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">
+            A common beginner mistake is fitting a scaler on the entire dataset before performing a train/test split. This exposes validation/test distribution parameters (μ, σ, min, max) to the model during training, causing <strong>data leakage</strong> and unrealistic performance metrics.
+        </p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div style="background: #0d1117; padding: 0.75rem; border-radius: 6px; border: 1px solid #f85149;">
+                <strong style="color: #f85149;">❌ WRONG (Data Leakage):</strong>
+                <pre style="font-size: 0.8rem; color: #f85149; margin-top: 0.4rem;">scaler.fit(X_full)  # Leaks test stats!
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)</pre>
+            </div>
+            <div style="background: #0d1117; padding: 0.75rem; border-radius: 6px; border: 1px solid #3fb950;">
+                <strong style="color: #3fb950;">✅ RIGHT (Strict Isolation):</strong>
+                <pre style="font-size: 0.8rem; color: #3fb950; margin-top: 0.4rem;">scaler.fit(X_train)  # Train stats only!
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)</pre>
+            </div>
+        </div>
+        {% if scaling_data.leakage_demonstration %}
+        <p style="font-size: 0.85rem; color: #8b949e;">
+            <strong>Empirical Demonstration on {{ scaling_data.leakage_demonstration.feature_demonstrated }}:</strong>
+            Safe Train Mean: <code>{{ scaling_data.leakage_demonstration.safe_train_mean }}</code> | 
+            Leaky Combined Mean: <code>{{ scaling_data.leakage_demonstration.leaky_combined_mean }}</code> | 
+            Parameter Shift: <code>{{ scaling_data.leakage_demonstration.mean_shift }}</code>.
+            {{ scaling_data.leakage_demonstration.verdict }}
+        </p>
+        {% endif %}
+    </div>
+
+    <!-- E. Scaler Selection Matrix -->
+    <h3 style="margin-top: 2rem;">E. Scaler Comparison Matrix</h3>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Scaler</th>
+                    <th>Formula</th>
+                    <th>Center & Spread</th>
+                    <th>Bounded?</th>
+                    <th>Outlier Impact</th>
+                    <th>When to Use</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in scaling_data.comparison_matrix %}
+                <tr>
+                    <td><strong>{{ row.scaler }}</strong></td>
+                    <td><code>{{ row.formula }}</code></td>
+                    <td>{{ row.center }}<br><small>{{ row.spread }}</small></td>
+                    <td>{{ row.bounded }}</td>
+                    <td style="color: #f0883e;">{{ row.outlier_impact }}</td>
+                    <td style="color: #58a6ff;">{{ row.recommended_use }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- F. Models Needing Scaling vs Tree Models -->
+    <h3 style="margin-top: 2rem;">F. Machine Learning Model Scaling Requirements</h3>
+    <p style="font-size: 0.9rem; color: #8b949e;">Understanding which algorithms require feature scaling versus tree-based models that are scale-invariant:</p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+        <!-- Models Needing Scaling -->
+        <div class="card" style="background: #161b22; border-top: 3px solid #f85149; margin-bottom: 0;">
+            <h4 style="color: #f85149; margin-bottom: 0.75rem;">⚡ Models That REQUIRE Scaling</h4>
+            {% for item in scaling_data.model_guidance.models_needing_scaling %}
+            <div style="margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid #30363d;">
+                <strong style="color: #e6edf3;">{{ item.model_category }}</strong>
+                <p style="font-size: 0.8rem; color: #58a6ff; margin: 0.2rem 0;"><em>{{ item.examples }}</em></p>
+                <p style="font-size: 0.85rem; color: #8b949e; margin: 0;">{{ item.why_needed }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Models Not Needing Scaling -->
+        <div class="card" style="background: #161b22; border-top: 3px solid #3fb950; margin-bottom: 0;">
+            <h4 style="color: #3fb950; margin-bottom: 0.75rem;">🌲 Models Invariant to Scaling (Tree Ensembles)</h4>
+            {% for item in scaling_data.model_guidance.models_not_needing_scaling %}
+            <div style="margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid #30363d;">
+                <strong style="color: #e6edf3;">{{ item.model_category }}</strong>
+                <p style="font-size: 0.8rem; color: #3fb950; margin: 0.2rem 0;"><em>{{ item.examples }}</em></p>
+                <p style="font-size: 0.85rem; color: #8b949e; margin: 0;">{{ item.why_not_needed }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- 13. CO1 — Duplicate Records Detection & Handling -->
+<div id="duplicates" class="card" style="margin-top: 2rem;">
+    <h2>13. CO1 — Duplicate Records Detection & Handling</h2>
+    <p>Big data duplicate identification distinguishing exact full-row duplicates from records sharing business keys, with risk evaluation for legitimate simultaneous trips.</p>
+
+    {% if duplicate_data %}
+    <!-- A. Duplicate Audit Cards -->
+    <h3 style="margin-top: 1.5rem;">A. Duplicate Records Audit (Dask Distributed)</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+        <!-- Exact Full-Row Card -->
+        <div class="card" style="background: #161b22; border-left: 4px solid #3fb950; margin-bottom: 0;">
+            <h4 style="color: #3fb950; margin-bottom: 0.25rem;">Exact Full-Row Duplicates</h4>
+            <p style="font-size: 0.85rem; color: #8b949e;">Every column across all 20 fields is identical</p>
+            <div style="display: flex; justify-content: space-between; margin-top: 0.75rem;">
+                <div>
+                    <span style="font-size: 1.4rem; font-weight: bold; color: #3fb950;">{{ duplicate_data.exact_duplicates.duplicate_count }}</span>
+                    <span style="font-size: 0.8rem; color: #8b949e;">({{ duplicate_data.exact_duplicates.duplicate_pct }}%)</span>
+                </div>
+                <div style="text-align: right;">
+                    <span style="font-size: 0.9rem; color: #e6edf3;">Unique Rows:</span><br>
+                    <strong style="color: #58a6ff;">{{ duplicate_data.exact_duplicates.unique_records }}</strong>
+                </div>
+            </div>
+            <p style="font-size: 0.85rem; color: #3fb950; margin-top: 0.5rem;"><strong>Status:</strong> {{ duplicate_data.exact_duplicates.status }}</p>
+        </div>
+
+        <!-- Subset Business Key Card -->
+        <div class="card" style="background: #161b22; border-left: 4px solid #d29922; margin-bottom: 0;">
+            <h4 style="color: #d29922; margin-bottom: 0.25rem;">Business-Key Subset Duplicates</h4>
+            <p style="font-size: 0.85rem; color: #8b949e;">Shared [Pickup/Dropoff Time, Zones, Passengers, Distance]</p>
+            <div style="display: flex; justify-content: space-between; margin-top: 0.75rem;">
+                <div>
+                    <span style="font-size: 1.4rem; font-weight: bold; color: #d29922;">{{ duplicate_data.subset_duplicates.duplicate_count }}</span>
+                    <span style="font-size: 0.8rem; color: #8b949e;">({{ duplicate_data.subset_duplicates.duplicate_pct }}%)</span>
+                </div>
+                <div style="text-align: right;">
+                    <span style="font-size: 0.9rem; color: #e6edf3;">Unique Subsets:</span><br>
+                    <strong style="color: #58a6ff;">{{ duplicate_data.subset_duplicates.unique_records }}</strong>
+                </div>
+            </div>
+            <p style="font-size: 0.85rem; color: #8b949e; margin-top: 0.5rem;">Subset evaluated: <code>{{ duplicate_data.subset_duplicates.subset_columns | join(', ') }}</code></p>
+        </div>
+    </div>
+
+    <!-- B. Duplicate Treatment Comparison Table -->
+    <h3 style="margin-top: 2rem;">B. Analytical Duplicate Treatment Comparison</h3>
+    <p style="font-size: 0.9rem; color: #8b949e;">Evaluating the data retention and operational consequences of deletion strategies without altering the primary cleaned dataset:</p>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Strategy</th>
+                    <th>Original Records</th>
+                    <th>Records Removed</th>
+                    <th>Remaining Records</th>
+                    <th>Retention %</th>
+                    <th>Risk Assessment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in duplicate_data.treatment_comparison %}
+                <tr>
+                    <td><strong>{{ row.strategy }}</strong><br><small style="color: #8b949e;">{{ row.description }}</small></td>
+                    <td>{{ row.original_records }}</td>
+                    <td style="color: {% if row.records_removed > 0 %}#f85149{% else %}#3fb950{% endif %}; font-weight: bold;">
+                        {{ row.records_removed }}
+                    </td>
+                    <td><strong>{{ row.remaining_records }}</strong></td>
+                    <td>{{ row.retention_pct }}%</td>
+                    <td style="font-size: 0.85rem; color: #e6edf3;">{{ row.risk_assessment }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- C. Risks of Removing Legitimate Trips -->
+    <h3 style="margin-top: 2rem;">C. Operational Risks of Deduplication in Taxi Big Data</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+        {% for risk in duplicate_data.risks %}
+        <div class="card" style="background: #161b22; margin-bottom: 0;">
+            <h4 style="color: #f0883e; font-size: 0.95rem; margin-bottom: 0.4rem;">{{ risk.factor }}</h4>
+            <p style="font-size: 0.85rem; color: #8b949e; margin: 0; line-height: 1.4;">{{ risk.explanation }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- D. Analytical Verdict -->
+    <div class="alert-box" style="margin-top: 1.5rem; border-left-color: #58a6ff;">
+        <h4 style="color: #58a6ff; margin-bottom: 0.5rem;">📋 Analytical Verdict & Dataset Preservation</h4>
+        <p style="font-size: 0.9rem; margin-bottom: 0;">
+            {{ duplicate_data.verdict }} The original cleaned dataset of <strong>2,816,149 records</strong> is preserved 100% intact to prevent artificial revenue and trip undercounting.
+        </p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

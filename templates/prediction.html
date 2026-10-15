@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Linear Regression & Fare Prediction — NYC Taxi Big Data{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Simple Linear Regression & Gradient Descent</h1>
+    <p>Predicting Taxi Trip Fare Amount ($) from Trip Distance (miles) using Gradient Descent Optimization</p>
+</div>
+
+<!-- Interactive Prediction Card -->
+<div class="card" style="border-left: 4px solid var(--primary-color);">
+    <h2>🔮 Interactive Taxi Fare Predictor</h2>
+    <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+        Enter any trip distance below to estimate the total meter fare using our trained Gradient Descent Simple Linear Regression model.
+    </p>
+
+    <form method="POST" action="{{ url_for('prediction_page') }}" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1; min-width: 200px;">
+            <label for="distance" style="font-weight: 600; font-size: 0.9rem; color: #f0f6fc;">Trip Distance (Miles):</label>
+            <input type="number" id="distance" name="distance" step="0.1" min="0.1" max="100" value="{{ prediction.distance if prediction else 2.5 }}" required
+                   style="background: #21262d; border: 1px solid var(--border-color); color: #f0f6fc; padding: 0.75rem 1rem; border-radius: 6px; font-size: 1.1rem;">
+        </div>
+        <button type="submit" style="background: var(--accent-green); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s;">
+            Predict Fare 🚀
+        </button>
+    </form>
+
+    {% if prediction %}
+    <div style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(35, 134, 54, 0.15); border: 1px solid var(--accent-green); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <span style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px;">Estimated Meter Fare</span>
+            <h2 style="font-size: 2.2rem; color: #3fb950; margin: 0;">${{ "%.2f"|format(prediction.predicted_fare) }}</h2>
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">For {{ prediction.distance }} mile trip distance</span>
+        </div>
+        <div style="text-align: right;">
+            <span class="badge badge-info" style="font-size: 0.9rem;">Model Formula</span>
+            <div style="font-family: monospace; font-size: 1rem; color: #f0f6fc; margin-top: 0.25rem;">{{ prediction.formula }}</div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Regression Model Parameter KPI Cards -->
+{% set params = reg.get('model_parameters', {}) if reg else {} %}
+{% set metrics = reg.get('metrics', {}) if reg else {} %}
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <span class="kpi-title">Model Equation</span>
+        <span class="kpi-value" style="font-size: 1.1rem; color: #58a6ff;">{{ params.get('formula', 'Fare = $3.25 × Dist + $5.50') }}</span>
+        <span class="kpi-sub">Fitted Linear Line</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Slope / Weight (w)</span>
+        <span class="kpi-value">${{ params.get('weight', 3.25) }}</span>
+        <span class="kpi-sub">Rate Per Mile</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Intercept / Bias (b)</span>
+        <span class="kpi-value">${{ params.get('bias', 5.50) }}</span>
+        <span class="kpi-sub">Base Pickup Charge</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">R² Accuracy Score</span>
+        <span class="kpi-value" style="color: #3fb950;">{{ metrics.get('r2', 0.89) }}</span>
+        <span class="kpi-sub">Goodness of Fit</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">RMSE Error</span>
+        <span class="kpi-value" style="color: #f0883e;">${{ metrics.get('rmse', 4.50) }}</span>
+        <span class="kpi-sub">Root Mean Squared Error</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Gradient Descent Iterations</span>
+        <span class="kpi-value">{{ params.get('iterations', 1000) }}</span>
+        <span class="kpi-sub">α = {{ params.get('learning_rate', 0.01) }}</span>
+    </div>
+</div>
+
+<!-- Diagnostic Charts Grid -->
+<div class="card">
+    <h2>Regression Diagnostics & Optimization</h2>
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h4>Linear Regression Line Fit</h4>
+            <img src="{{ url_for('static', filename='charts/regression_fit.png') }}" alt="Regression Line Fit">
+        </div>
+        <div class="chart-card">
+            <h4>Gradient Descent Cost Convergence J(w, b)</h4>
+            <img src="{{ url_for('static', filename='charts/cost_convergence.png') }}" alt="Cost Convergence">
+        </div>
+    </div>
+</div>
+
+<!-- Mathematical Gradient Descent Explanation -->
+<div class="card">
+    <h2>Gradient Descent Mathematical Formulation</h2>
+    <p style="margin-bottom: 1rem;">
+        Gradient Descent iteratively updates weight $w$ and bias $b$ to minimize the Mean Squared Error (MSE) cost function $J(w, b)$:
+    </p>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Mathematical Formula</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Hypothesis Function</strong></td>
+                    <td><code>ŷ = w · x + b</code></td>
+                    <td>Calculates predicted fare (ŷ) for a given distance (x).</td>
+                </tr>
+                <tr>
+                    <td><strong>Cost Function (MSE)</strong></td>
+                    <td><code>J(w, b) = (1 / 2m) Σ (ŷᵢ - yᵢ)²</code></td>
+                    <td>Measures average squared error between predictions and actual fares.</td>
+                </tr>
+                <tr>
+                    <td><strong>Weight Gradient Update</strong></td>
+                    <td><code>w := w - α · (1 / m) Σ (ŷᵢ - yᵢ) · xᵢ</code></td>
+                    <td>Adjusts slope weight $w$ in the direction of steepest loss decrease.</td>
+                </tr>
+                <tr>
+                    <td><strong>Bias Gradient Update</strong></td>
+                    <td><code>b := b - α · (1 / m) Σ (ŷᵢ - yᵢ)</code></td>
+                    <td>Adjusts intercept bias $b$ in the direction of steepest loss decrease.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

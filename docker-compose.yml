@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  riderush-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: riderush_app
+    ports:
+      - "5050:5050"
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./outputs:/app/outputs
+      - ./static/charts:/app/static/charts
+    restart: unless-stopped

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Data Quality & Cleaning — NYC Taxi Big Data{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Phases 3 & 4 — Data Quality & Cleaning</h1>
+    <p>Data quality inspection, anomaly breakdown, cleaning logic, and retention statistics</p>
+</div>
+
+<!-- Cleaning Retention KPI Cards -->
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <span class="kpi-title">Original Records</span>
+        <span class="kpi-value">{{ "{:,}".format(stats.original_records) }}</span>
+        <span class="kpi-sub">Raw Ingestion</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Invalid Records</span>
+        <span class="kpi-value" style="color: #f85149;">{{ "{:,}".format(stats.invalid_records) }}</span>
+        <span class="kpi-sub">Anomalies Detected</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Cleaned Records</span>
+        <span class="kpi-value" style="color: #3fb950;">{{ "{:,}".format(stats.cleaned_records) }}</span>
+        <span class="kpi-sub">{{ stats.retention_pct }}% Retained</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Records Removed</span>
+        <span class="kpi-value" style="color: #f0883e;">{{ "{:,}".format(stats.removed_records) }}</span>
+        <span class="kpi-sub">Filtered Out</span>
+    </div>
+</div>
+
+<!-- Applied Cleaning Rules Explanation -->
+<div class="card">
+    <h2>Applied Data Cleaning Rules</h2>
+    <div class="alert-box">
+        <p><strong>Strict Audit Policy:</strong> Records are not blindly deleted. Data cleaning rules eliminate only physically or logically impossible meter glitch records before performing EDA:</p>
+    </div>
+    <ul style="margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <li><code>passenger_count > 0</code> — Eliminates unrecorded passenger values</li>
+        <li><code>trip_distance > 0</code> — Filters non-moving or canceled trips</li>
+        <li><code>fare_amount >= 0</code> & <code>total_amount >= 0</code> — Drops negative meter glitch values</li>
+        <li><code>tpep_dropoff_datetime >= tpep_pickup_datetime</code> — Resolves reverse timestamp corruption</li>
+        <li><code>0.1 <= trip_duration_minutes <= 1440</code> — Keeps trips between 6 seconds and 24 hours</li>
+    </ul>
+</div>
+
+<!-- Missing Values Table -->
+<div class="card">
+    <h2>Missing Values Analysis</h2>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Column Name</th>
+                    <th>Missing Count</th>
+                    <th>Missing Percentage (%)</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in quality.missing_table %}
+                <tr>
+                    <td><strong>{{ item.column }}</strong></td>
+                    <td>{{ "{:,}".format(item.missing_count) }}</td>
+                    <td>{{ item.missing_pct }}%</td>
+                    <td>
+                        {% if item.missing_count == 0 %}
+                        <span class="badge badge-success">Complete (0% missing)</span>
+                        {% else %}
+                        <span class="badge badge-warning">Optional / Surcharge Nulls</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Anomaly Breakdown Table -->
+<div class="card">
+    <h2>Invalid Record Anomaly Breakdown</h2>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Anomaly Condition</th>
+                    <th>Problematic Record Count</th>
+                    <th>Action Taken</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Invalid Passenger Count (<code>passenger_count <= 0</code>)</td>
+                    <td>{{ "{:,}".format(quality.invalid_passenger_count) }}</td>
+                    <td>Filtered</td>
+                </tr>
+                <tr>
+                    <td>Zero or Negative Distance (<code>trip_distance <= 0</code>)</td>
+                    <td>{{ "{:,}".format(quality.zero_negative_distance) }}</td>
+                    <td>Filtered</td>
+                </tr>
+                <tr>
+                    <td>Negative Fare Amount (<code>fare_amount < 0</code>)</td>
+                    <td>{{ "{:,}".format(quality.negative_fare_amount) }}</td>
+                    <td>Filtered</td>
+                </tr>
+                <tr>
+                    <td>Negative Total Amount (<code>total_amount < 0</code>)</td>
+                    <td>{{ "{:,}".format(quality.negative_total_amount) }}</td>
+                    <td>Filtered</td>
+                </tr>
+                <tr>
+                    <td>Drop-off Timestamp Before Pickup (<code>dropoff < pickup</code>)</td>
+                    <td>{{ "{:,}".format(quality.dropoff_before_pickup) }}</td>
+                    <td>Filtered</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

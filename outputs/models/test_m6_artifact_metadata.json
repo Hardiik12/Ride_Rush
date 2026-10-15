@@ -1,0 +1,26 @@
+{
+  "model_name": "test_m6_artifact",
+  "binary_file": "test_m6_artifact.joblib",
+  "sha256_checksum": "f8a28bc692ab9ce929cd633fb24665181dbcfaf5ecb65e298a83b64ce2e30fab",
+  "target_name": "fare_amount",
+  "feature_schema": {
+    "trip_distance": {
+      "type": "float",
+      "min": 0.05,
+      "max": 100.0,
+      "required": true
+    }
+  },
+  "feature_order": [
+    "trip_distance"
+  ],
+  "metrics": {},
+  "hyperparameters": {},
+  "framework_versions": {
+    "scikit_learn": "1.9.0",
+    "joblib": "1.6.0",
+    "numpy": "2.5.2"
+  },
+  "creation_timestamp": "2026-10-15 18:22:58 UTC",
+  "security_notice": "SECURITY ADVISORY: Joblib/Pickle binaries execute arbitrary bytecode during deserialization. Never load untrusted model files from unverified external sources without cryptographic hash checks."
+}

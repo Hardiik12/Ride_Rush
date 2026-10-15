@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Data Understanding — NYC Taxi Big Data{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Phase 2 — Data Understanding</h1>
+    <p>Structural metadata, schema definitions, sample records, and summary statistics</p>
+</div>
+
+<!-- Dataset Metadata -->
+<div class="card">
+    <h2>Dataset Metadata</h2>
+    <div class="table-container">
+        <table class="data-table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Dataset Name</td><td>{{ info.dataset_name }}</td></tr>
+            <tr><td>File Format</td><td><span class="badge badge-info">{{ info.file_format }}</span></td></tr>
+            <tr><td>Number of Rows</td><td>{{ "{:,}".format(info.total_rows) }}</td></tr>
+            <tr><td>Number of Columns</td><td>{{ info.num_columns }}</td></tr>
+            <tr><td>Dask Partitions</td><td>{{ info.num_partitions }}</td></tr>
+            <tr><td>Dataset Shape</td><td>{{ info.shape[0] }} x {{ info.shape[1] }}</td></tr>
+        </table>
+    </div>
+</div>
+
+<!-- Columns & Data Types -->
+<div class="card">
+    <h2>Schema & Data Types</h2>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Column Name</th>
+                    <th>Data Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for col in info.columns %}
+                <tr>
+                    <td><strong>{{ col.name }}</strong></td>
+                    <td><code>{{ col.dtype }}</code></td>
+                    <td>
+                        {% if col.name == 'VendorID' %}TPEP provider code (1=CMT, 2=VeriFone)
+                        {% elif col.name == 'tpep_pickup_datetime' %}Date and time when the meter was engaged
+                        {% elif col.name == 'tpep_dropoff_datetime' %}Date and time when the meter was disengaged
+                        {% elif col.name == 'passenger_count' %}Number of passengers in the vehicle
+                        {% elif col.name == 'trip_distance' %}Elapsed trip distance in miles
+                        {% elif col.name == 'PULocationID' %}TLC Taxi Zone in which taximeter was engaged
+                        {% elif col.name == 'DOLocationID' %}TLC Taxi Zone in which taximeter was disengaged
+                        {% elif col.name == 'RatecodeID' %}Final rate code in effect (1=Standard, 2=JFK, 3=Newark)
+                        {% elif col.name == 'store_and_fwd_flag' %}Flag held in vehicle memory before sending
+                        {% elif col.name == 'payment_type' %}Numeric code for payment method (1=Credit card, 2=Cash)
+                        {% elif col.name == 'fare_amount' %}Time-and-distance meter fare
+                        {% elif col.name == 'tip_amount' %}Tip amount (credit card tips automatically populated)
+                        {% elif col.name == 'total_amount' %}Total charge to passenger
+                        {% else %}Recorded trip metric surcharge/fee
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- First 10 Sample Rows -->
+<div class="card">
+    <h2>First 10 Raw Sample Rows</h2>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>VendorID</th>
+                    <th>Pickup Datetime</th>
+                    <th>Dropoff Datetime</th>
+                    <th>Passengers</th>
+                    <th>Distance</th>
+                    <th>PULocationID</th>
+                    <th>DOLocationID</th>
+                    <th>Payment</th>
+                    <th>Fare ($)</th>
+                    <th>Tip ($)</th>
+                    <th>Total ($)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in info.sample_rows %}
+                <tr>
+                    <td>{{ row.VendorID }}</td>
+                    <td>{{ row.tpep_pickup_datetime }}</td>
+                    <td>{{ row.tpep_dropoff_datetime }}</td>
+                    <td>{{ row.passenger_count }}</td>
+                    <td>{{ row.trip_distance }}</td>
+                    <td>{{ row.PULocationID }}</td>
+                    <td>{{ row.DOLocationID }}</td>
+                    <td>{{ row.payment_type }}</td>
+                    <td>${{ row.fare_amount }}</td>
+                    <td>${{ row.tip_amount }}</td>
+                    <td>${{ row.total_amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Descriptive Statistics -->
+<div class="card">
+    <h2>Descriptive Statistics (Dask Aggregated)</h2>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>passenger_count</th>
+                    <th>trip_distance</th>
+                    <th>fare_amount</th>
+                    <th>tip_amount</th>
+                    <th>total_amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max'] %}
+                <tr>
+                    <td><strong>{{ stat }}</strong></td>
+                    <td>{{ info.statistics.passenger_count.get(stat, '-') }}</td>
+                    <td>{{ info.statistics.trip_distance.get(stat, '-') }}</td>
+                    <td>${{ info.statistics.fare_amount.get(stat, '-') }}</td>
+                    <td>${{ info.statistics.tip_amount.get(stat, '-') }}</td>
+                    <td>${{ info.statistics.total_amount.get(stat, '-') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1728 @@
+{
+  "dataset_info": {
+    "dataset_name": "yellow_tripdata_2025-01.parquet",
+    "file_format": "Parquet",
+    "file_path": "/Users/hardik/RideRush/data/yellow_tripdata_2025-01.parquet",
+    "total_rows": 3475226,
+    "num_columns": 20,
+    "num_partitions": 1,
+    "shape": [
+      3475226,
+      20
+    ],
+    "columns": [
+      {
+        "name": "VendorID",
+        "dtype": "int32"
+      },
+      {
+        "name": "tpep_pickup_datetime",
+        "dtype": "datetime64[us]"
+      },
+      {
+        "name": "tpep_dropoff_datetime",
+        "dtype": "datetime64[us]"
+      },
+      {
+        "name": "passenger_count",
+        "dtype": "int64"
+      },
+      {
+        "name": "trip_distance",
+        "dtype": "float64"
+      },
+      {
+        "name": "RatecodeID",
+        "dtype": "int64"
+      },
+      {
+        "name": "store_and_fwd_flag",
+        "dtype": "string"
+      },
+      {
+        "name": "PULocationID",
+        "dtype": "int32"
+      },
+      {
+        "name": "DOLocationID",
+        "dtype": "int32"
+      },
+      {
+        "name": "payment_type",
+        "dtype": "int64"
+      },
+      {
+        "name": "fare_amount",
+        "dtype": "float64"
+      },
+      {
+        "name": "extra",
+        "dtype": "float64"
+      },
+      {
+        "name": "mta_tax",
+        "dtype": "float64"
+      },
+      {
+        "name": "tip_amount",
+        "dtype": "float64"
+      },
+      {
+        "name": "tolls_amount",
+        "dtype": "float64"
+      },
+      {
+        "name": "improvement_surcharge",
+        "dtype": "float64"
+      },
+      {
+        "name": "total_amount",
+        "dtype": "float64"
+      },
+      {
+        "name": "congestion_surcharge",
+        "dtype": "float64"
+      },
+      {
+        "name": "Airport_fee",
+        "dtype": "float64"
+      },
+      {
+        "name": "cbd_congestion_fee",
+        "dtype": "float64"
+      }
+    ],
+    "sample_rows": [
+      {
+        "VendorID": 1,
+        "tpep_pickup_datetime": "2025-01-01 00:18:38",
+        "tpep_dropoff_datetime": "2025-01-01 00:26:59",
+        "passenger_count": 1.0,
+        "trip_distance": 1.6,
+        "RatecodeID": 1.0,
+        "store_and_fwd_flag": "N",
+        "PULocationID": 229,
+        "DOLocationID": 237,
+        "payment_type": 1,
+        "fare_amount": 10.0,
+        "extra": 3.5,
+        "mta_tax": 0.5,
+        "tip_amount": 3.0,
+        "tolls_amount": 0.0,
+        "improvement_surcharge": 1.0,
+        "total_amount": 18.0,
+        "congestion_surcharge": 2.5,
+        "Airport_fee": 0.0,
+        "cbd_congestion_fee": 0.0
+      },
+      {
+        "VendorID": 1,
+        "tpep_pickup_datetime": "2025-01-01 00:32:40",
+        "tpep_dropoff_datetime": "2025-01-01 00:35:13",
+        "passenger_count": 1.0,
+        "trip_distance": 0.5,
+        "RatecodeID": 1.0,
+        "store_and_fwd_flag": "N",
+        "PULocationID": 236,
+        "DOLocationID": 237,
+        "payment_type": 1,
+        "fare_amount": 5.1,
+        "extra": 3.5,
+        "mta_tax": 0.5,
+        "tip_amount": 2.02,
+        "tolls_amount": 0.0,
+        "improvement_surcharge": 1.0,
+        "total_amount": 12.12,
+        "congestion_surcharge": 2.5,
+        "Airport_fee": 0.0,
+        "cbd_congestion_fee": 0.0
+      },
+      {
+        "VendorID": 1,
+        "tpep_pickup_datetime": "2025-01-01 00:44:04",
+        "tpep_dropoff_datetime": "2025-01-01 00:46:01",
+        "passenger_count": 1.0,
+        "trip_distance": 0.6,
+        "RatecodeID": 1.0,
+        "store_and_fwd_flag": "N",
+        "PULocationID": 141,
+        "DOLocationID": 141,
+        "payment_type": 1,
+        "fare_amount": 5.1,
+        "extra": 3.5,
+        "mta_tax": 0.5,
+        "tip_amount": 2.0,
+        "tolls_amount": 0.0,
+        "improvement_surcharge": 1.0,
+        "total_amount": 12.1,
+        "congestion_surcharge": 2.5,
+        "Airport_fee": 0.0,
+        "cbd_congestion_fee": 0.0
+      },
+      {
+        "VendorID": 2,
+        "tpep_pickup_datetime": "2025-01-01 00:14:27",
+        "tpep_dropoff_datetime": "2025-01-01 00:20:01",
+        "passenger_count": 3.0,
+        "trip_distance": 0.52,
+        "RatecodeID": 1.0,
+        "store_and_fwd_flag": "N",
+        "PULocationID": 244,
+        "DOLocationID": 244,
+        "payment_type": 2,
+        "fare_amount": 7.2,
+        "extra": 1.0,
+        "mta_tax": 0.5,
+        "tip_amount": 0.0,
+        "tolls_amount": 0.0,
+        "improvement_surcharge": 1.0,
+        "total_amount": 9.7,
+        "congestion_surcharge": 0.0,
+        "Airport_fee": 0.0,
+        "cbd_congestion_fee": 0.0
+      },
+      {
+        "VendorID": 2,
+        "tpep_pickup_datetime": "2025-01-01 00:21:34",
+        "tpep_dropoff_datetime": "2025-01-01 00:25:06",
+        "passenger_count": 3.0,
+        "trip_distance": 0.66,
+        "RatecodeID": 1.0,
+        "store_and_fwd_flag": "N",
+        "PULocationID": 244,
+        "DOLocationID": 116,
+        "payment_type": 2,
+        "fare_amount": 5.8,
+        "extra": 1.0,
+        "mta_tax": 0.5,
+        "tip_amount": 0.0,
+        "tolls_amount": 0.0,
+        "improvement_surcharge": 1.0,
+        "total_amount": 8.3,
+        "congestion_surcharge": 0.0,
+        "Airport_fee": 0.0,
+        "cbd_congestion_fee": 0.0
+      },
+      {
+        "VendorID": 2,
+        "tpep_pickup_datetime": "2025-01-01 00:48:24",
+        "tpep_dropoff_datetime": "2025-01-01 01:08:26",
+        "passenger_count": 2.0,
+        "trip_distance": 2.63,
+        "RatecodeID": 1.0,
+        "store_and_fwd_flag": "N",
+        "PULocationID": 239,
+        "DOLocationID": 68,
+        "payment_type": 2,
+        "fare_amount": 19.1,
+        "extra": 1.0,
+        "mta_tax": 0.5,
+        "tip_amount": 0.0,
+        "tolls_amount": 0.0,
+        "improvement_surcharge": 1.0,
+        "total_amount": 24.1,
+        "congestion_surcharge": 2.5,
+        "Airport_fee": 0.0,
+        "cbd_congestion_fee": 0.0
+      },
+      {
+        "VendorID": 1,
+        "tpep_pickup_datetime": "2025-01-01 00:14:47",
+        "tpep_dropoff_datetime": "2025-01-01 00:16:15",
+        "passenger_count": 0.0,
+        "trip_distance": 0.4,
+        "RatecodeID": 1.0,
+        "store_and_fwd_flag": "N",
+        "PULocationID": 170,
+        "DOLocationID": 170,
+        "payment_type": 1,
+        "fare_amount": 4.4,
+        "extra": 3.5,
+        "mta_tax": 0.5,
+        "tip_amount": 2.35,
+        "tolls_amount": 0.0,
+        "improvement_surcharge": 1.0,
+        "total_amount": 11.75,
+        "congestion_surcharge": 2.5,
+        "Airport_fee": 0.0,
+        "cbd_congestion_fee": 0.0
+      },
+      {
+        "VendorID": 1,
+        "tpep_pickup_datetime": "2025-01-01 00:39:27",
+        "tpep_dropoff_datetime": "2025-01-01 00:51:51",
+        "passenger_count": 0.0,
+        "trip_distance": 1.6,
+        "RatecodeID": 1.0,
+        "store_and_fwd_flag": "N",
+        "PULocationID": 234,
+        "DOLocationID": 148,
+        "payment_type": 1,
+        "fare_amount": 12.1,
+        "extra": 3.5,
+        "mta_tax": 0.5,
+        "tip_amount": 2.0,
+        "tolls_amount": 0.0,
+        "improvement_surcharge": 1.0,
+        "total_amount": 19.1,
+        "congestion_surcharge": 2.5,
+        "Airport_fee": 0.0,
+        "cbd_congestion_fee": 0.0
+      },
+      {
+        "VendorID": 1,
+        "tpep_pickup_datetime": "2025-01-01 00:53:43",
+        "tpep_dropoff_datetime": "2025-01-01 01:13:23",
+        "passenger_count": 0.0,
+        "trip_distance": 2.8,
+        "RatecodeID": 1.0,
+        "store_and_fwd_flag": "N",
+        "PULocationID": 148,
+        "DOLocationID": 170,
+        "payment_type": 1,
+        "fare_amount": 19.1,
+        "extra": 3.5,
+        "mta_tax": 0.5,
+        "tip_amount": 3.0,
+        "tolls_amount": 0.0,
+        "improvement_surcharge": 1.0,
+        "total_amount": 27.1,
+        "congestion_surcharge": 2.5,
+        "Airport_fee": 0.0,
+        "cbd_congestion_fee": 0.0
+      },
+      {
+        "VendorID": 2,
+        "tpep_pickup_datetime": "2025-01-01 00:00:02",
+        "tpep_dropoff_datetime": "2025-01-01 00:09:36",
+        "passenger_count": 1.0,
+        "trip_distance": 1.71,
+        "RatecodeID": 1.0,
+        "store_and_fwd_flag": "N",
+        "PULocationID": 237,
+        "DOLocationID": 262,
+        "payment_type": 2,
+        "fare_amount": 11.4,
+        "extra": 1.0,
+        "mta_tax": 0.5,
+        "tip_amount": 0.0,
+        "tolls_amount": 0.0,
+        "improvement_surcharge": 1.0,
+        "total_amount": 16.4,
+        "congestion_surcharge": 2.5,
+        "Airport_fee": 0.0,
+        "cbd_congestion_fee": 0.0
+      }
+    ],
+    "statistics": {
+      "passenger_count": {
+        "count": 2935077.0,
+        "mean": 1.3,
+        "std": 0.75,
+        "min": 0.0,
+        "25%": 1.0,
+        "50%": 1.0,
+        "75%": 1.0,
+        "max": 9.0
+      },
+      "trip_distance": {
+        "count": 3475226.0,
+        "mean": 5.86,
+        "std": 564.6,
+        "min": 0.0,
+        "25%": 0.98,
+        "50%": 1.67,
+        "75%": 3.1,
+        "max": 276423.57
+      },
+      "fare_amount": {
+        "count": 3475226.0,
+        "mean": 17.08,
+        "std": 463.47,
+        "min": -900.0,
+        "25%": 8.6,
+        "50%": 12.11,
+        "75%": 19.5,
+        "max": 863372.12
+      },
+      "tip_amount": {
+        "count": 3475226.0,
+        "mean": 2.96,
+        "std": 3.78,
+        "min": -86.0,
+        "25%": 0.0,
+        "50%": 2.45,
+        "75%": 3.93,
+        "max": 400.0
+      },
+      "total_amount": {
+        "count": 3475226.0,
+        "mean": 25.61,
+        "std": 463.66,
+        "min": -901.0,
+        "25%": 15.2,
+        "50%": 19.95,
+        "75%": 27.78,
+        "max": 863380.37
+      }
+    }
+  },
+  "quality_metrics": {
+    "total_rows": 3475226,
+    "missing_table": [
+      {
+        "column": "VendorID",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "tpep_pickup_datetime",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "tpep_dropoff_datetime",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "passenger_count",
+        "missing_count": 540149,
+        "missing_pct": 15.54
+      },
+      {
+        "column": "trip_distance",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "RatecodeID",
+        "missing_count": 540149,
+        "missing_pct": 15.54
+      },
+      {
+        "column": "store_and_fwd_flag",
+        "missing_count": 540149,
+        "missing_pct": 15.54
+      },
+      {
+        "column": "PULocationID",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "DOLocationID",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "payment_type",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "fare_amount",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "extra",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "mta_tax",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "tip_amount",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "tolls_amount",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "improvement_surcharge",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "total_amount",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      },
+      {
+        "column": "congestion_surcharge",
+        "missing_count": 540149,
+        "missing_pct": 15.54
+      },
+      {
+        "column": "Airport_fee",
+        "missing_count": 540149,
+        "missing_pct": 15.54
+      },
+      {
+        "column": "cbd_congestion_fee",
+        "missing_count": 0,
+        "missing_pct": 0.0
+      }
+    ],
+    "invalid_passenger_count": 24656,
+    "zero_negative_distance": 90893,
+    "negative_fare_amount": 144118,
+    "negative_total_amount": 63037,
+    "dropoff_before_pickup": 124,
+    "missing_pickup_time": 0,
+    "missing_dropoff_time": 0
+  },
+  "cleaning_stats": {
+    "original_records": 3475226,
+    "invalid_records": 659077,
+    "cleaned_records": 2816149,
+    "removed_records": 659077,
+    "retention_pct": 81.03
+  },
+  "outlier_table": [
+    {
+      "variable": "trip_distance",
+      "q1": 0.99,
+      "q3": 3.0,
+      "iqr": 2.01,
+      "lower_bound": -2.02,
+      "upper_bound": 6.01,
+      "potential_outliers": 368695,
+      "outlier_pct": 13.09
+    },
+    {
+      "variable": "trip_duration_minutes",
+      "q1": 7.07,
+      "q3": 18.13,
+      "iqr": 11.07,
+      "lower_bound": -9.53,
+      "upper_bound": 34.73,
+      "potential_outliers": 171515,
+      "outlier_pct": 6.09
+    },
+    {
+      "variable": "fare_amount",
+      "q1": 8.6,
+      "q3": 19.1,
+      "iqr": 10.5,
+      "lower_bound": -7.15,
+      "upper_bound": 34.85,
+      "potential_outliers": 308644,
+      "outlier_pct": 10.96
+    },
+    {
+      "variable": "total_amount",
+      "q1": 15.95,
+      "q3": 28.45,
+      "iqr": 12.5,
+      "lower_bound": -2.8,
+      "upper_bound": 47.2,
+      "potential_outliers": 309244,
+      "outlier_pct": 10.98
+    }
+  ],
+  "insights": {
+    "busiest_hour": "17:00 (206,902 trips)",
+    "busiest_day": "Thursday (499,719 trips)",
+    "avg_trip_distance": "3.23 miles",
+    "median_trip_distance": "1.63 miles",
+    "min_trip_distance": "0.01 miles",
+    "max_trip_distance": "44730.30 miles",
+    "avg_trip_duration": "15.11 minutes",
+    "median_trip_duration": "11.35 minutes",
+    "min_trip_duration": "0.02 minutes",
+    "max_trip_duration": "1439.87 minutes",
+    "avg_fare": "$18.25",
+    "median_fare": "$12.10",
+    "min_fare": "$0.00",
+    "max_fare": "$863372.12",
+    "most_common_payment": "Credit Card",
+    "most_common_passengers": 1,
+    "top_pickup_location": "Zone 237 (148,020 pickups)",
+    "top_dropoff_location": "Zone 236 (144,496 drop-offs)",
+    "distance_fare_corr": "0.94"
+  },
+  "outliers": {
+    "iqr_table": [
+      {
+        "variable": "trip_distance",
+        "q1": 0.99,
+        "median": 1.63,
+        "q3": 3.0,
+        "iqr": 2.01,
+        "lower_bound": -2.02,
+        "upper_bound": 6.01,
+        "potential_outliers": 368695,
+        "outlier_pct": 13.09
+      },
+      {
+        "variable": "trip_duration_minutes",
+        "q1": 7.07,
+        "median": 11.35,
+        "q3": 18.13,
+        "iqr": 11.07,
+        "lower_bound": -9.53,
+        "upper_bound": 34.73,
+        "potential_outliers": 171515,
+        "outlier_pct": 6.09
+      },
+      {
+        "variable": "fare_amount",
+        "q1": 8.6,
+        "median": 12.1,
+        "q3": 19.1,
+        "iqr": 10.5,
+        "lower_bound": -7.15,
+        "upper_bound": 34.85,
+        "potential_outliers": 308644,
+        "outlier_pct": 10.96
+      },
+      {
+        "variable": "total_amount",
+        "q1": 15.95,
+        "median": 20.35,
+        "q3": 28.45,
+        "iqr": 12.5,
+        "lower_bound": -2.8,
+        "upper_bound": 47.2,
+        "potential_outliers": 309244,
+        "outlier_pct": 10.98
+      }
+    ],
+    "boxplots_chart": "static/charts/outlier_boxplots.png",
+    "treatments": {
+      "remove_impact": {
+        "original_clean_records": 2816149,
+        "records_after_removal": 2421278,
+        "records_removed": 394871,
+        "retention_pct": 85.98
+      },
+      "retain_impact": {
+        "original_clean_records": 2816149,
+        "records_retained": 2816149,
+        "records_removed": 0,
+        "retention_pct": 100.0
+      },
+      "winsorize_comparison": [
+        {
+          "variable": "trip_distance",
+          "mean_before": 3.17,
+          "mean_after": 2.31,
+          "median_before": 1.63,
+          "median_after": 1.63,
+          "std_before": 4.32,
+          "std_after": 1.8
+        },
+        {
+          "variable": "trip_duration_minutes",
+          "mean_before": 15.1,
+          "mean_after": 13.72,
+          "median_before": 11.33,
+          "median_after": 11.33,
+          "std_before": 28.9,
+          "std_after": 8.81
+        },
+        {
+          "variable": "fare_amount",
+          "mean_before": 17.91,
+          "mean_after": 15.39,
+          "median_before": 12.1,
+          "median_after": 12.1,
+          "std_before": 17.16,
+          "std_after": 9.14
+        },
+        {
+          "variable": "total_amount",
+          "mean_before": 27.33,
+          "mean_after": 23.83,
+          "median_before": 20.3,
+          "median_after": 20.3,
+          "std_before": 21.59,
+          "std_after": 10.93
+        }
+      ],
+      "method_comparison_table": [
+        {
+          "method": "Remove Outliers (IQR Filtering)",
+          "records_removed": "394,871",
+          "data_preserved_pct": "85.98%",
+          "effect": "Eliminates all records outside Q1 - 1.5*IQR and Q3 + 1.5*IQR bounds"
+        },
+        {
+          "method": "Retain Outliers (Keep Original)",
+          "records_removed": "0",
+          "data_preserved_pct": "100.0%",
+          "effect": "Preserves all genuine extreme trips (e.g. long borough or airport travel)"
+        },
+        {
+          "method": "Winsorization (Bound Capping)",
+          "records_removed": "0",
+          "data_preserved_pct": "100.0%",
+          "effect": "Caps extreme values at Lower & Upper bounds without dropping any rows"
+        }
+      ]
+    }
+  },
+  "missing_values": {
+    "audit": {
+      "total_rows": 2816149,
+      "audit_table": [
+        {
+          "column": "VendorID",
+          "dtype": "int32",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "tpep_pickup_datetime",
+          "dtype": "datetime64[us]",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "tpep_dropoff_datetime",
+          "dtype": "datetime64[us]",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "passenger_count",
+          "dtype": "int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "trip_distance",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "RatecodeID",
+          "dtype": "int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "store_and_fwd_flag",
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "PULocationID",
+          "dtype": "int32",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "DOLocationID",
+          "dtype": "int32",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "payment_type",
+          "dtype": "int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "fare_amount",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "extra",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "mta_tax",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "tip_amount",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "tolls_amount",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "improvement_surcharge",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "total_amount",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "congestion_surcharge",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "Airport_fee",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "cbd_congestion_fee",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        },
+        {
+          "column": "trip_duration_minutes",
+          "dtype": "float64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "non_missing_count": 2816149
+        }
+      ],
+      "columns_with_missing": []
+    },
+    "mechanisms": [
+      {
+        "mechanism": "MCAR (Missing Completely At Random)",
+        "definition": "The probability of a value being missing is completely independent of both observed and unobserved data.",
+        "taxi_context": "Illustrative: Random wireless transmission packet dropouts when sending meter updates."
+      },
+      {
+        "mechanism": "MAR (Missing At Random)",
+        "definition": "Missingness depends systematically on other observed variables in the dataset, but not on the missing value itself.",
+        "taxi_context": "Illustrative: Missing congestion surcharge fields in trips originating outside Manhattan congestion zones."
+      },
+      {
+        "mechanism": "MNAR (Missing Not At Random)",
+        "definition": "Missingness depends directly on the unobserved missing value itself or unmeasured factors.",
+        "taxi_context": "Illustrative: Unreported cash tips where passengers pay cash directly to the driver without recording."
+      }
+    ],
+    "row_deletion": {
+      "original_rows": 2816149,
+      "removed_rows": 0,
+      "remaining_rows": 2816149,
+      "retention_pct": 100.0
+    },
+    "column_deletion": {
+      "original_columns_count": 21,
+      "removed_columns_count": 0,
+      "retained_columns_count": 21,
+      "removed_columns": [],
+      "retained_columns": [
+        "VendorID",
+        "tpep_pickup_datetime",
+        "tpep_dropoff_datetime",
+        "passenger_count",
+        "trip_distance",
+        "RatecodeID",
+        "store_and_fwd_flag",
+        "PULocationID",
+        "DOLocationID",
+        "payment_type",
+        "fare_amount",
+        "extra",
+        "mta_tax",
+        "tip_amount",
+        "tolls_amount",
+        "improvement_surcharge",
+        "total_amount",
+        "congestion_surcharge",
+        "Airport_fee",
+        "cbd_congestion_fee",
+        "trip_duration_minutes"
+      ]
+    },
+    "mean_imputation": [
+      {
+        "column": "passenger_count",
+        "missing_before": 0,
+        "missing_after": 0,
+        "computed_mean": 1.31
+      },
+      {
+        "column": "trip_distance",
+        "missing_before": 0,
+        "missing_after": 0,
+        "computed_mean": 3.23
+      },
+      {
+        "column": "fare_amount",
+        "missing_before": 0,
+        "missing_after": 0,
+        "computed_mean": 18.25
+      },
+      {
+        "column": "tip_amount",
+        "missing_before": 0,
+        "missing_after": 0,
+        "computed_mean": 3.5
+      },
+      {
+        "column": "total_amount",
+        "missing_before": 0,
+        "missing_after": 0,
+        "computed_mean": 27.68
+      }
+    ],
+    "median_imputation": [
+      {
+        "column": "passenger_count",
+        "missing_before": 0,
+        "missing_after": 0,
+        "computed_median": 1.0
+      },
+      {
+        "column": "trip_distance",
+        "missing_before": 0,
+        "missing_after": 0,
+        "computed_median": 1.63
+      },
+      {
+        "column": "fare_amount",
+        "missing_before": 0,
+        "missing_after": 0,
+        "computed_median": 12.1
+      },
+      {
+        "column": "tip_amount",
+        "missing_before": 0,
+        "missing_after": 0,
+        "computed_median": 2.89
+      },
+      {
+        "column": "total_amount",
+        "missing_before": 0,
+        "missing_after": 0,
+        "computed_median": 20.35
+      }
+    ],
+    "knn_imputation": {
+      "sample_size": 3000,
+      "n_neighbors": 5,
+      "features_imputed": [
+        "passenger_count",
+        "trip_distance",
+        "fare_amount",
+        "tip_amount",
+        "total_amount"
+      ],
+      "missing_before": 745,
+      "missing_after": 0
+    },
+    "iterative_imputation": {
+      "sample_size": 3000,
+      "max_iterations": 10,
+      "features_imputed": [
+        "passenger_count",
+        "trip_distance",
+        "fare_amount",
+        "tip_amount",
+        "total_amount"
+      ],
+      "missing_before": 745,
+      "missing_after": 0
+    },
+    "missing_indicators": [
+      {
+        "original_column": "passenger_count",
+        "indicator_column": "passenger_count_missing",
+        "missing_indicator_ones": 0,
+        "missing_indicator_zeros": 3000
+      },
+      {
+        "original_column": "RatecodeID",
+        "indicator_column": "RatecodeID_missing",
+        "missing_indicator_ones": 0,
+        "missing_indicator_zeros": 3000
+      },
+      {
+        "original_column": "congestion_surcharge",
+        "indicator_column": "congestion_surcharge_missing",
+        "missing_indicator_ones": 0,
+        "missing_indicator_zeros": 3000
+      },
+      {
+        "original_column": "Airport_fee",
+        "indicator_column": "Airport_fee_missing",
+        "missing_indicator_ones": 0,
+        "missing_indicator_zeros": 3000
+      }
+    ],
+    "comparison_table": [
+      {
+        "method": "Listwise Row Deletion",
+        "data_loss": "0 rows (0.00%)",
+        "computational_cost": "Very Low",
+        "advantages": "Simple to execute; produces complete dataset without synthetic assumptions.",
+        "disadvantages": "High data loss; introduces severe bias if data is not MCAR.",
+        "when_to_use": "When missingness is minimal (< 5%) and confirmed MCAR."
+      },
+      {
+        "method": "Column Deletion",
+        "data_loss": "0 feature column(s)",
+        "computational_cost": "Very Low",
+        "advantages": "Eliminates highly incomplete features completely.",
+        "disadvantages": "Permanent loss of feature domain information.",
+        "when_to_use": "When a column has > 50% missing values and is non-essential."
+      },
+      {
+        "method": "Mean Imputation",
+        "data_loss": "None (0 rows lost)",
+        "computational_cost": "Low",
+        "advantages": "Preserves sample size; fast arithmetic computation.",
+        "disadvantages": "Distorts variance, shrinks standard deviation, ignores correlations.",
+        "when_to_use": "Symmetric, normally distributed numerical data with low missingness."
+      },
+      {
+        "method": "Median Imputation",
+        "data_loss": "None (0 rows lost)",
+        "computational_cost": "Low",
+        "advantages": "Robust to extreme outliers and skewed distributions.",
+        "disadvantages": "Distorts feature variance and covariance structure.",
+        "when_to_use": "Skewed numerical features containing heavy outliers (e.g. fare amounts)."
+      },
+      {
+        "method": "KNN Imputation",
+        "data_loss": "None (0 rows lost)",
+        "computational_cost": "High (Sampled n=3,000)",
+        "advantages": "Uses feature similarity from nearest neighbors; preserves localized patterns.",
+        "disadvantages": "Computationally prohibitive ($O(N^2)$) for multi-million-row Big Data.",
+        "when_to_use": "Medium-sized datasets where multi-variable spatial relationships matter."
+      },
+      {
+        "method": "Iterative / MICE Imputation",
+        "data_loss": "None (0 rows lost)",
+        "computational_cost": "Very High (Sampled n=3,000)",
+        "advantages": "Model-based multivariable regression modeling; preserves complex covariance.",
+        "disadvantages": "Slow iterative convergence; requires random-state tracking.",
+        "when_to_use": "Complex tabular datasets where features strongly predict each other."
+      },
+      {
+        "method": "Missing Indicator",
+        "data_loss": "None (0 rows lost)",
+        "computational_cost": "Low",
+        "advantages": "Captures missingness signal explicitly for ML predictive models.",
+        "disadvantages": "Doubles column count for imputed features.",
+        "when_to_use": "When missingness is MNAR and contains predictive diagnostic value."
+      }
+    ],
+    "chart": "static/charts/missing_values.png"
+  },
+  "scaling": {
+    "sample_size": 140807,
+    "train_size": 112645,
+    "test_size": 28162,
+    "features_scaled": [
+      "trip_distance",
+      "fare_amount",
+      "trip_duration_minutes",
+      "total_amount"
+    ],
+    "chart": "scaling_comparison.png",
+    "feature_summary": [
+      {
+        "feature": "trip_distance",
+        "original_mean": 3.1591,
+        "original_std": 4.3205,
+        "original_min": 0.01,
+        "original_median": 1.62,
+        "original_max": 116.9,
+        "original_iqr": 2.01,
+        "std_mean": 0.0,
+        "std_std": 1.0,
+        "std_min": -0.7289,
+        "std_max": 26.3259,
+        "minmax_min": 0.0,
+        "minmax_max": 1.0,
+        "minmax_mean": 0.0269,
+        "robust_median": 0.0,
+        "robust_iqr": 1.0,
+        "robust_min": -0.801,
+        "robust_max": 57.3532
+      },
+      {
+        "feature": "fare_amount",
+        "original_mean": 17.8878,
+        "original_std": 17.2144,
+        "original_min": 0.0,
+        "original_median": 12.1,
+        "original_max": 595.2,
+        "original_iqr": 10.5,
+        "std_mean": -0.0,
+        "std_std": 1.0,
+        "std_min": -1.0391,
+        "std_max": 33.5366,
+        "minmax_min": 0.0,
+        "minmax_max": 1.0,
+        "minmax_mean": 0.0301,
+        "robust_median": 0.0,
+        "robust_iqr": 1.0,
+        "robust_min": -1.1524,
+        "robust_max": 55.5333
+      },
+      {
+        "feature": "trip_duration_minutes",
+        "original_mean": 15.101,
+        "original_std": 29.6034,
+        "original_min": 0.0167,
+        "original_median": 11.3333,
+        "original_max": 1439.0833,
+        "original_iqr": 11.05,
+        "std_mean": 0.0,
+        "std_std": 1.0,
+        "std_min": -0.5095,
+        "std_max": 48.102,
+        "minmax_min": 0.0,
+        "minmax_max": 1.0,
+        "minmax_mean": 0.0105,
+        "robust_median": 0.0,
+        "robust_iqr": 1.0,
+        "robust_min": -1.0241,
+        "robust_max": 129.2081
+      },
+      {
+        "feature": "total_amount",
+        "original_mean": 27.2971,
+        "original_std": 21.6251,
+        "original_min": 0.0,
+        "original_median": 20.25,
+        "original_max": 691.79,
+        "original_iqr": 12.6,
+        "std_mean": 0.0,
+        "std_std": 1.0,
+        "std_min": -1.2623,
+        "std_max": 30.7279,
+        "minmax_min": 0.0,
+        "minmax_max": 1.0,
+        "minmax_mean": 0.0395,
+        "robust_median": 0.0,
+        "robust_iqr": 1.0,
+        "robust_min": -1.6071,
+        "robust_max": 53.2968
+      }
+    ],
+    "standard_scaler": {
+      "formula": "z = (x - \u03bc) / \u03c3",
+      "description": "Transforms features to have zero mean (\u03bc=0) and unit standard deviation (\u03c3=1).",
+      "outlier_sensitivity": "High \u2014 Outliers skew the mean and expand standard deviation, compressing non-outliers into a narrow band.",
+      "fitted_parameters": {
+        "trip_distance": {
+          "mean": 3.1591,
+          "std": 4.3205
+        },
+        "fare_amount": {
+          "mean": 17.8878,
+          "std": 17.2144
+        },
+        "trip_duration_minutes": {
+          "mean": 15.101,
+          "std": 29.6034
+        },
+        "total_amount": {
+          "mean": 27.2971,
+          "std": 21.6251
+        }
+      },
+      "stats_after": [
+        {
+          "feature": "trip_distance",
+          "mean": 0.0,
+          "std": 1.0,
+          "min": -0.7289,
+          "q25": -0.5021,
+          "median": -0.3562,
+          "q75": -0.0368,
+          "max": 26.3259,
+          "iqr": 0.4652
+        },
+        {
+          "feature": "fare_amount",
+          "mean": -0.0,
+          "std": 1.0,
+          "min": -1.0391,
+          "q25": -0.5395,
+          "median": -0.3362,
+          "q75": 0.0704,
+          "max": 33.5366,
+          "iqr": 0.61
+        },
+        {
+          "feature": "trip_duration_minutes",
+          "mean": 0.0,
+          "std": 1.0,
+          "min": -0.5095,
+          "q25": -0.272,
+          "median": -0.1273,
+          "q75": 0.1013,
+          "max": 48.102,
+          "iqr": 0.3733
+        },
+        {
+          "feature": "total_amount",
+          "mean": 0.0,
+          "std": 1.0,
+          "min": -1.2623,
+          "q25": -0.5293,
+          "median": -0.3259,
+          "q75": 0.0533,
+          "max": 30.7279,
+          "iqr": 0.5827
+        }
+      ]
+    },
+    "minmax_scaler": {
+      "formula": "x' = (x - x_min) / (x_max - x_min)",
+      "description": "Compresses features strictly into the bounded range [0, 1].",
+      "outlier_sensitivity": "Very High \u2014 Extreme outliers set x_max or x_min, squashing the vast majority of regular data into a minuscule sub-interval.",
+      "fitted_parameters": {
+        "trip_distance": {
+          "min": 0.01,
+          "max": 116.9,
+          "range": 116.89
+        },
+        "fare_amount": {
+          "min": 0.0,
+          "max": 595.2,
+          "range": 595.2
+        },
+        "trip_duration_minutes": {
+          "min": 0.0167,
+          "max": 1439.0833,
+          "range": 1439.0667
+        },
+        "total_amount": {
+          "min": 0.0,
+          "max": 691.79,
+          "range": 691.79
+        }
+      },
+      "stats_after": [
+        {
+          "feature": "trip_distance",
+          "mean": 0.0269,
+          "std": 0.037,
+          "min": 0.0,
+          "q25": 0.0084,
+          "median": 0.0138,
+          "q75": 0.0256,
+          "max": 1.0,
+          "iqr": 0.0172
+        },
+        {
+          "feature": "fare_amount",
+          "mean": 0.0301,
+          "std": 0.0289,
+          "min": 0.0,
+          "q25": 0.0144,
+          "median": 0.0203,
+          "q75": 0.0321,
+          "max": 1.0,
+          "iqr": 0.0176
+        },
+        {
+          "feature": "trip_duration_minutes",
+          "mean": 0.0105,
+          "std": 0.0206,
+          "min": 0.0,
+          "q25": 0.0049,
+          "median": 0.0079,
+          "q75": 0.0126,
+          "max": 1.0,
+          "iqr": 0.0077
+        },
+        {
+          "feature": "total_amount",
+          "mean": 0.0395,
+          "std": 0.0313,
+          "min": 0.0,
+          "q25": 0.0229,
+          "median": 0.0293,
+          "q75": 0.0411,
+          "max": 1.0,
+          "iqr": 0.0182
+        }
+      ]
+    },
+    "robust_scaler": {
+      "formula": "x' = (x - Median) / (Q3 - Q1)",
+      "description": "Centers data around the median (median=0) and divides by IQR (IQR=1). Does not cap bounds.",
+      "outlier_sensitivity": "Low / Robust \u2014 Outliers do not distort the median or the middle 50% spread, preserving distribution shape without collapsing typical records.",
+      "fitted_parameters": {
+        "trip_distance": {
+          "center_median": 1.62,
+          "scale_iqr": 2.01
+        },
+        "fare_amount": {
+          "center_median": 12.1,
+          "scale_iqr": 10.5
+        },
+        "trip_duration_minutes": {
+          "center_median": 11.3333,
+          "scale_iqr": 11.05
+        },
+        "total_amount": {
+          "center_median": 20.25,
+          "scale_iqr": 12.6
+        }
+      },
+      "stats_after": [
+        {
+          "feature": "trip_distance",
+          "mean": 0.7657,
+          "std": 2.1495,
+          "min": -0.801,
+          "q25": -0.3134,
+          "median": 0.0,
+          "q75": 0.6866,
+          "max": 57.3532,
+          "iqr": 1.0
+        },
+        {
+          "feature": "fare_amount",
+          "mean": 0.5512,
+          "std": 1.6395,
+          "min": -1.1524,
+          "q25": -0.3333,
+          "median": 0.0,
+          "q75": 0.6667,
+          "max": 55.5333,
+          "iqr": 1.0
+        },
+        {
+          "feature": "trip_duration_minutes",
+          "mean": 0.341,
+          "std": 2.679,
+          "min": -1.0241,
+          "q25": -0.3876,
+          "median": 0.0,
+          "q75": 0.6124,
+          "max": 129.2081,
+          "iqr": 1.0
+        },
+        {
+          "feature": "total_amount",
+          "mean": 0.5593,
+          "std": 1.7163,
+          "min": -1.6071,
+          "q25": -0.3492,
+          "median": 0.0,
+          "q75": 0.6508,
+          "max": 53.2968,
+          "iqr": 1.0
+        }
+      ]
+    },
+    "leakage_demonstration": {
+      "feature_demonstrated": "fare_amount",
+      "train_size": 112645,
+      "test_size": 28162,
+      "safe_train_mean": 17.8878,
+      "safe_train_std": 17.2144,
+      "leaky_combined_mean": 17.9133,
+      "leaky_combined_std": 17.1567,
+      "test_mean_with_safe_fit": 0.0074,
+      "test_mean_with_leaky_fit": 0.006,
+      "test_std_with_safe_fit": 0.9831,
+      "test_std_with_leaky_fit": 0.9864,
+      "mean_shift": 0.02553,
+      "verdict": "Fitting the scaler on the entire dataset incorporates test-set distribution parameters (\u03bc, \u03c3) into training preprocessing. In production or cross-validation, this produces overly optimistic validation performance and causes pipeline drift on genuine unseen data."
+    },
+    "comparison_matrix": [
+      {
+        "scaler": "StandardScaler (Z-Score)",
+        "formula": "z = (x - \u03bc) / \u03c3",
+        "center": "Mean = 0",
+        "spread": "Std Dev = 1",
+        "bounded": "No ([-\u221e, +\u221e])",
+        "outlier_impact": "High. Outliers distort mean & variance, compressing non-outlier cluster.",
+        "recommended_use": "Features following roughly Gaussian distributions; Gradient Descent algorithms; Ridge/Lasso regularization; PCA; Logistic Regression."
+      },
+      {
+        "scaler": "MinMaxScaler",
+        "formula": "x' = (x - x_min) / (x_max - x_min)",
+        "center": "Depends on bounds",
+        "spread": "Fixed to [0, 1]",
+        "bounded": "Yes ([0, 1])",
+        "outlier_impact": "Severe. Extreme outliers push x_max far out, squeezing valid data into a narrow sliver.",
+        "recommended_use": "Algorithms requiring strictly bounded inputs (Image pixel values, Neural Networks with Sigmoid activations, KNN distance where bounded range is required and outliers are absent)."
+      },
+      {
+        "scaler": "RobustScaler",
+        "formula": "x' = (x - Median) / IQR",
+        "center": "Median = 0",
+        "spread": "IQR = 1",
+        "bounded": "No ([-\u221e, +\u221e])",
+        "outlier_impact": "Low / Robust. Uses 50th percentile and middle 50% range; extreme values cannot skew center or spread.",
+        "recommended_use": "Heavy-tailed, skewed datasets with persistent genuine outliers (e.g., NYC Taxi trip distances, airport fares, surge rates) where removing outliers is undesirable."
+      }
+    ],
+    "model_guidance": {
+      "models_needing_scaling": [
+        {
+          "model_category": "Distance-Based Models",
+          "examples": "KNN (K-Nearest Neighbors), K-Means Clustering, DBSCAN",
+          "why_needed": "Compute Euclidean or Manhattan distances between vectors. A feature with larger magnitude (e.g. Total Fare in $ vs Passenger Count in units) completely dominates the distance metric, rendering smaller-scale features negligible."
+        },
+        {
+          "model_category": "Gradient Descent Optimization",
+          "examples": "Simple & Multiple Linear Regression (GD), Logistic Regression, Neural Networks",
+          "why_needed": "Unscaled features create elongated, elliptical cost surface contours. Gradient descent oscillates wildly and requires an excessively small learning rate to converge. Scaling produces circular loss contours, accelerating convergence."
+        },
+        {
+          "model_category": "Regularized Linear Models",
+          "examples": "Ridge Regression (L2), Lasso Regression (L1), ElasticNet",
+          "why_needed": "Regularization penalizes weight magnitudes (\u03bb \u2211 w_i\u00b2). If features have unequal scales, the penalty disproportionately punishes coefficients of smaller-scale features, biasing feature selection."
+        },
+        {
+          "model_category": "Kernel & Margin-Based Models",
+          "examples": "SVM (Support Vector Machines), PCA (Principal Component Analysis)",
+          "why_needed": "SVM maximizes the margin in feature space; unscaled attributes distort the margin boundary. PCA identifies axes of maximum variance; unscaled high-variance features falsely capture all principal components."
+        }
+      ],
+      "models_not_needing_scaling": [
+        {
+          "model_category": "Decision Trees & Ensembles",
+          "examples": "DecisionTreeClassifier/Regressor, Random Forest, Extra Trees",
+          "why_not_needed": "Tree algorithms split nodes feature-by-feature based on threshold inequalities (x_i <= threshold) evaluated via Gini Impurity, Entropy, or MSE reduction. Monotonic transformations do not change the ranking or split points of single features."
+        },
+        {
+          "model_category": "Gradient Boosted Decision Trees",
+          "examples": "XGBoost, LightGBM, CatBoost, GradientBoostingClassifier",
+          "why_not_needed": "Like Random Forests, boosting algorithms construct ensembles of decision tree stumps/leaves. Split searching operates independently along each 1D coordinate, making them completely invariant to monotonic feature scaling."
+        },
+        {
+          "model_category": "Naive Bayes (Certain Variants)",
+          "examples": "CategoricalNB, MultinomialNB",
+          "why_not_needed": "Count-based frequency probability distributions evaluate class likelihoods independently for categorical inputs."
+        }
+      ]
+    }
+  },
+  "duplicates": {
+    "exact_duplicates": {
+      "total_records": 2816149,
+      "unique_records": 2816149,
+      "duplicate_count": 0,
+      "duplicate_pct": 0.0,
+      "has_exact_duplicates": false,
+      "status": "No exact duplicates detected"
+    },
+    "subset_duplicates": {
+      "total_records": 2816149,
+      "unique_records": 2816147,
+      "duplicate_count": 2,
+      "duplicate_pct": 7e-05,
+      "subset_columns": [
+        "tpep_pickup_datetime",
+        "tpep_dropoff_datetime",
+        "PULocationID",
+        "DOLocationID",
+        "passenger_count",
+        "trip_distance"
+      ],
+      "has_subset_duplicates": true
+    },
+    "treatment_comparison": [
+      {
+        "strategy": "Retain All Records (Baseline)",
+        "description": "Preserve all records without filtering duplicates.",
+        "original_records": 2816149,
+        "records_removed": 0,
+        "remaining_records": 2816149,
+        "retention_pct": 100.0,
+        "risk_assessment": "Zero risk of data loss. Preserves true simultaneous dispatches and high-frequency event runs."
+      },
+      {
+        "strategy": "Exact-Row Deletion",
+        "description": "Drop records where every column across all 20 fields is strictly identical.",
+        "original_records": 2816149,
+        "records_removed": 0,
+        "remaining_records": 2816149,
+        "retention_pct": 100.0,
+        "risk_assessment": "Safe. True identical rows are usually network retry glitches or data pipeline logging duplications."
+      },
+      {
+        "strategy": "Business-Key Subset Deletion",
+        "description": "Drop records sharing identical [tpep_pickup_datetime, tpep_dropoff_datetime, PULocationID, ...].",
+        "original_records": 2816149,
+        "records_removed": 2,
+        "remaining_records": 2816147,
+        "retention_pct": 99.9999,
+        "risk_assessment": "High Risk. NYC TLC data intentionally excludes Medallion/Hack License IDs for privacy. Two cabs leaving JFK at the same minute to Midtown are legitimate independent trips. Deleting them creates artificial revenue undercounting."
+      }
+    ],
+    "risks": [
+      {
+        "factor": "Lack of Unique Vehicle Identifiers",
+        "explanation": "Official NYC TLC public parquet files intentionally anonymize or omit taxi medallion numbers and hack license IDs to protect driver privacy. Consequently, two distinct taxis operated by different drivers that pick up passengers at the exact same location and time cannot be distinguished by timestamps alone."
+      },
+      {
+        "factor": "High-Density Hub Pickups",
+        "explanation": "Major transit hubs (JFK Terminal 4, LaGuardia Terminal B, Penn Station, Grand Central, Yankee Stadium) experience dozens of taxi departures per minute. Two cabs departing simultaneously toward the Financial District with 1 passenger each represent legitimate independent commercial rides."
+      },
+      {
+        "factor": "Meter Granularity & Clock Rounding",
+        "explanation": "Taximeter clocks in disparate vehicles may round pickup times to the nearest minute or second. Trips initiated within seconds of each other in the same zone often appear to have identical pickup times."
+      },
+      {
+        "factor": "Impact on Aggregations & Revenue Reporting",
+        "explanation": "Dropping subset duplicates artificially depresses total fare volume, passenger counts, and congestion metrics, distorting public transit planning and revenue forecasts."
+      }
+    ],
+    "verdict": "Exact row duplicates are 0 (0.00%) in the cleaned dataset. Subset duplicates (2 records, 0.00007%) share timestamps and zones but represent legitimate distinct rides. Main cleaned dataset is retained intact at 2,816,149 records."
+  },
+  "regression": {
+    "model_parameters": {
+      "weight": 3.6417,
+      "bias": 6.3315,
+      "learning_rate": 0.01,
+      "iterations": 1000,
+      "formula": "Fare ($) = 3.64 \u00d7 Distance + $6.33"
+    },
+    "metrics": {
+      "mse": 25.7789,
+      "rmse": 5.0773,
+      "mae": 2.5628,
+      "r2": 0.898
+    },
+    "sample_size": 140617,
+    "cost_initial": 126.4056,
+    "cost_final": 12.8894
+  },
+  "workbench": {
+    "dataset_split": {
+      "total_records": 84388,
+      "train_records": 59071,
+      "validation_records": 12658,
+      "test_records": 12659,
+      "split_ratio": "70% Train / 15% Validation / 15% Test"
+    },
+    "target_feature": "fare_amount",
+    "primary_feature": "trip_distance",
+    "models_evaluated": [
+      {
+        "key": "baseline_gd",
+        "name": "Linear Regression (Gradient Descent)",
+        "category": "Baseline (Unregularized)",
+        "formula": "Fare ($) = 3.64 \u00d7 Dist + $6.31",
+        "hyperparameters": {
+          "learning_rate": 0.01,
+          "iterations": 1000
+        },
+        "description": "Baseline custom gradient descent linear estimator trained directly from first principles without penalty constraints.",
+        "mae": 2.5809,
+        "mse": 28.7382,
+        "rmse": 5.3608,
+        "r2": 0.8874,
+        "sample_prediction_10mi": 42.75
+      },
+      {
+        "key": "polynomial",
+        "name": "Polynomial Regression (Degree 2)",
+        "category": "Non-Linear Expansion",
+        "formula": "y = w\u2081\u00b7x + w\u2082\u00b7x\u00b2 + b (Degree 2)",
+        "hyperparameters": {
+          "degree": 2,
+          "include_bias": false
+        },
+        "description": "Expands single distance feature into polynomial powers [x, x\u00b2] to model non-linear curvature in taxi trip tariffs.",
+        "mae": 2.4204,
+        "mse": 27.1977,
+        "rmse": 5.2151,
+        "r2": 0.8935,
+        "sample_prediction_10mi": 44.89
+      },
+      {
+        "key": "ridge",
+        "name": "Ridge Regression (L2, \u03b1=1.0)",
+        "category": "L2 Regularization",
+        "formula": "Loss = MSE + \u03b1 \u2211 w\u2c7c\u00b2",
+        "hyperparameters": {
+          "alpha": 1.0,
+          "penalty": "L2 (Ridge)"
+        },
+        "description": "Applies squared L2 Euclidean penalty on weights, shrinking coefficients toward zero to reduce prediction variance.",
+        "mae": 2.5808,
+        "mse": 28.7383,
+        "rmse": 5.3608,
+        "r2": 0.8874,
+        "sample_prediction_10mi": 42.75
+      },
+      {
+        "key": "lasso",
+        "name": "Lasso Regression (L1, \u03b1=0.1)",
+        "category": "L1 Regularization",
+        "formula": "Loss = MSE + \u03b1 \u2211 |w\u2c7c|",
+        "hyperparameters": {
+          "alpha": 0.1,
+          "penalty": "L1 (Lasso)"
+        },
+        "description": "Applies absolute L1 Manhattan penalty, driving uninformative or redundant coefficients strictly to 0 for sparse models.",
+        "mae": 2.5909,
+        "mse": 28.7159,
+        "rmse": 5.3587,
+        "r2": 0.8875,
+        "sample_prediction_10mi": 42.59
+      },
+      {
+        "key": "elastic_net",
+        "name": "Elastic Net (\u03b1=0.1, l1_ratio=0.5)",
+        "category": "L1 + L2 Elastic Net",
+        "formula": "Loss = MSE + \u03b1\u00b7\u03c1 \u2211 |w\u2c7c| + [\u03b1(1-\u03c1)/2] \u2211 w\u2c7c\u00b2",
+        "hyperparameters": {
+          "alpha": 0.1,
+          "l1_ratio": 0.5
+        },
+        "description": "Balances L1 sparsity and L2 stability, overcoming Lasso instability when features or collinearities are present.",
+        "mae": 2.7015,
+        "mse": 29.0837,
+        "rmse": 5.3929,
+        "r2": 0.8861,
+        "sample_prediction_10mi": 41.49
+      }
+    ],
+    "validation_benchmark": [
+      {
+        "key": "baseline_gd",
+        "name": "Linear Regression (Gradient Descent)",
+        "category": "Baseline (Unregularized)",
+        "formula": "Fare ($) = 3.64 \u00d7 Dist + $6.31",
+        "hyperparameters": {
+          "learning_rate": 0.01,
+          "iterations": 1000
+        },
+        "description": "Baseline custom gradient descent linear estimator trained directly from first principles without penalty constraints.",
+        "mae": 2.5491,
+        "mse": 26.2349,
+        "rmse": 5.122,
+        "r2": 0.8942,
+        "sample_prediction_10mi": 42.75
+      },
+      {
+        "key": "polynomial",
+        "name": "Polynomial Regression (Degree 2)",
+        "category": "Non-Linear Expansion",
+        "formula": "y = w\u2081\u00b7x + w\u2082\u00b7x\u00b2 + b (Degree 2)",
+        "hyperparameters": {
+          "degree": 2,
+          "include_bias": false
+        },
+        "description": "Expands single distance feature into polynomial powers [x, x\u00b2] to model non-linear curvature in taxi trip tariffs.",
+        "mae": 2.381,
+        "mse": 24.8886,
+        "rmse": 4.9888,
+        "r2": 0.8997,
+        "sample_prediction_10mi": 44.89
+      },
+      {
+        "key": "ridge",
+        "name": "Ridge Regression (L2, \u03b1=1.0)",
+        "category": "L2 Regularization",
+        "formula": "Loss = MSE + \u03b1 \u2211 w\u2c7c\u00b2",
+        "hyperparameters": {
+          "alpha": 1.0,
+          "penalty": "L2 (Ridge)"
+        },
+        "description": "Applies squared L2 Euclidean penalty on weights, shrinking coefficients toward zero to reduce prediction variance.",
+        "mae": 2.5491,
+        "mse": 26.2349,
+        "rmse": 5.122,
+        "r2": 0.8942,
+        "sample_prediction_10mi": 42.75
+      },
+      {
+        "key": "lasso",
+        "name": "Lasso Regression (L1, \u03b1=0.1)",
+        "category": "L1 Regularization",
+        "formula": "Loss = MSE + \u03b1 \u2211 |w\u2c7c|",
+        "hyperparameters": {
+          "alpha": 0.1,
+          "penalty": "L1 (Lasso)"
+        },
+        "description": "Applies absolute L1 Manhattan penalty, driving uninformative or redundant coefficients strictly to 0 for sparse models.",
+        "mae": 2.5594,
+        "mse": 26.2366,
+        "rmse": 5.1222,
+        "r2": 0.8942,
+        "sample_prediction_10mi": 42.59
+      },
+      {
+        "key": "elastic_net",
+        "name": "Elastic Net (\u03b1=0.1, l1_ratio=0.5)",
+        "category": "L1 + L2 Elastic Net",
+        "formula": "Loss = MSE + \u03b1\u00b7\u03c1 \u2211 |w\u2c7c| + [\u03b1(1-\u03c1)/2] \u2211 w\u2c7c\u00b2",
+        "hyperparameters": {
+          "alpha": 0.1,
+          "l1_ratio": 0.5
+        },
+        "description": "Balances L1 sparsity and L2 stability, overcoming Lasso instability when features or collinearities are present.",
+        "mae": 2.6665,
+        "mse": 26.7475,
+        "rmse": 5.1718,
+        "r2": 0.8922,
+        "sample_prediction_10mi": 41.49
+      }
+    ],
+    "best_model": {
+      "name": "Polynomial Regression (Degree 2)",
+      "rmse": 5.2151,
+      "r2": 0.8935,
+      "mae": 2.4204,
+      "category": "Non-Linear Expansion"
+    },
+    "charts": {
+      "prediction_plot": "regression_workbench_predictions.png",
+      "metrics_plot": "regression_workbench_metrics.png"
+    },
+    "educational_theory": {
+      "why_regularization_helps": "In high-dimensional or collinear feature spaces, Ordinary Least Squares minimizes in-sample training error without regard to parameter magnitude. This leads to large, oscillating weights that fit statistical noise rather than the true underlying data-generating distribution. Regularization introduces a penalty on parameter complexity into the loss function: Loss = Empirical Error + Complexity Penalty. This shrinks coefficients, stabilizes variance, and prevents catastrophic overfitting on unseen test records.",
+      "alpha_parameter_intuition": "The regularization strength \u03b1 (alpha) governs the Bias-Variance tradeoff: When \u03b1 = 0, the penalty is disabled, yielding standard unconstrained OLS (high variance, low bias). As \u03b1 increases, the penalty forces coefficients toward zero, reducing model complexity and variance at the expense of adding bias. If \u03b1 is excessively large, coefficients are shrunk near zero, leading to severe underfitting.",
+      "l1_vs_l2_geometry": "L1 (Lasso) vs L2 (Ridge) Geometric Duality: Ridge's L2 constraint region is a smooth hypersphere (\u2211 w\u2c7c\u00b2 \u2264 C). The elliptical contours of the MSE loss typically intersect the sphere along curved boundaries, shrinking all weights proportionally without setting them strictly to zero. Lasso's L1 constraint region is a sharp diamond / cross-polytope (\u2211 |w\u2c7c| \u2264 C) with vertices located directly on the coordinate axes. The loss contours frequently intersect at these sharp corners, forcing coefficients to exactly zero and performing automatic feature selection.",
+      "polynomial_overfitting_risks": "Why Polynomial Regression Can Overfit: Polynomial regression projects features into higher-order powers [x, x\u00b2, x\u00b3, ..., x\u1d48]. While degree 2 models natural tapering of fare rates over longer hauls, degrees \u2265 3 introduce Runge's phenomenon: extreme oscillations near the edges of the feature support. The model twists to pass through outlier data points in the training set, causing MSE on unseen test data to explode."
+    }
+  }
+}

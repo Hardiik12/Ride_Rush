@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}EDA Insights — NYC Taxi Big Data{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>EDA Key Insights</h1>
+    <p>Data-driven findings calculated directly from the January 2025 NYC Yellow Taxi Dataset</p>
+</div>
+
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <span class="kpi-title">Busiest Hour of Day</span>
+        <span class="kpi-value" style="font-size: 1.3rem; color: #58a6ff;">{{ insights.busiest_hour }}</span>
+        <span class="kpi-sub">Peak Evening Commute</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Busiest Day of Week</span>
+        <span class="kpi-value" style="font-size: 1.3rem; color: #a371f7;">{{ insights.busiest_day }}</span>
+        <span class="kpi-sub">Peak Mid-Week Volume</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Average Trip Distance</span>
+        <span class="kpi-value">{{ insights.avg_trip_distance }}</span>
+        <span class="kpi-sub">Median: {{ insights.median_trip_distance }}</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Average Fare Amount</span>
+        <span class="kpi-value" style="color: #3fb950;">{{ insights.avg_fare }}</span>
+        <span class="kpi-sub">Median: {{ insights.median_fare }}</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Average Trip Duration</span>
+        <span class="kpi-value">{{ insights.avg_trip_duration }}</span>
+        <span class="kpi-sub">Median: {{ insights.median_trip_duration }}</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Most Common Payment</span>
+        <span class="kpi-value" style="font-size: 1.3rem;">{{ insights.most_common_payment }}</span>
+        <span class="kpi-sub">Primary Payment Method</span>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Detailed Analytical Summary</h2>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Insight Dimension</th>
+                    <th>Calculated Empirical Metric</th>
+                    <th>Analytical Takeaway</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Busiest Pickup Hour</strong></td>
+                    <td>{{ insights.busiest_hour }}</td>
+                    <td>Demand concentrates during 5:00 PM - 7:00 PM rush hours.</td>
+                </tr>
+                <tr>
+                    <td><strong>Busiest Day of Week</strong></td>
+                    <td>{{ insights.busiest_day }}</td>
+                    <td>Mid-to-late weekdays experience highest commercial travel volume.</td>
+                </tr>
+                <tr>
+                    <td><strong>Trip Distance Statistics</strong></td>
+                    <td>Mean: {{ insights.avg_trip_distance }} | Median: {{ insights.median_trip_distance }}</td>
+                    <td>Short intra-city trips dominate, skewed by occasional long borough trips.</td>
+                </tr>
+                <tr>
+                    <td><strong>Trip Duration Statistics</strong></td>
+                    <td>Mean: {{ insights.avg_trip_duration }} | Median: {{ insights.median_trip_duration }}</td>
+                    <td>Average city taxi ride takes ~15 minutes.</td>
+                </tr>
+                <tr>
+                    <td><strong>Fare Amount Statistics</strong></td>
+                    <td>Mean: {{ insights.avg_fare }} | Median: {{ insights.median_fare }}</td>
+                    <td>Base fare reflects distance traveled plus time-in-traffic rates.</td>
+                </tr>
+                <tr>
+                    <td><strong>Most Common Passenger Count</strong></td>
+                    <td>{{ insights.most_common_passengers }} passenger(s)</td>
+                    <td>Single-rider trips represent over 70% of total NYC taxi rides.</td>
+                </tr>
+                <tr>
+                    <td><strong>Top Pickup Location Zone</strong></td>
+                    <td>{{ insights.top_pickup_location }}</td>
+                    <td>Upper East Side South experiences heaviest pickup activity.</td>
+                </tr>
+                <tr>
+                    <td><strong>Top Drop-off Location Zone</strong></td>
+                    <td>{{ insights.top_dropoff_location }}</td>
+                    <td>Upper East Side North experiences heaviest drop-off activity.</td>
+                </tr>
+                <tr>
+                    <td><strong>Distance vs. Fare Correlation</strong></td>
+                    <td>r = {{ insights.distance_fare_corr }}</td>
+                    <td>Strong positive linear relationship between trip distance and base fare.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NYC Taxi Big Data EDA & ML{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>NYC TAXI</h2>
+            <p>Big Data & Machine Learning</p>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">🏠 Dashboard</a></li>
+            <li><a href="{{ url_for('data_page') }}" class="{% if request.endpoint == 'data_page' %}active{% endif %}">📂 Data Understanding</a></li>
+            <li><a href="{{ url_for('cleaning_page') }}" class="{% if request.endpoint == 'cleaning_page' %}active{% endif %}">🧹 Data Quality & Cleaning</a></li>
+            <li><a href="{{ url_for('eda_page') }}" class="{% if request.endpoint == 'eda_page' %}active{% endif %}">📊 EDA Dashboard</a></li>
+            <li><a href="{{ url_for('insights_page') }}" class="{% if request.endpoint == 'insights_page' %}active{% endif %}">💡 Key Insights</a></li>
+            <li><a href="{{ url_for('prediction_page') }}" class="{% if request.endpoint == 'prediction_page' %}active{% endif %}">📈 Linear Regression & Prediction</a></li>
+            <li><a href="{{ url_for('workbench_page') }}" class="{% if request.endpoint == 'workbench_page' %}active{% endif %}">🔬 Regression Workbench</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Page Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>
