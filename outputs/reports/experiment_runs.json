@@ -1,0 +1,16 @@
+[
+  {
+    "run_id": "run_1792089641_1",
+    "experiment_name": "M6_Production_Candidate_Benchmark",
+    "model_type": "Polynomial_Degree_2",
+    "parameters": {
+      "degree": 2,
+      "scaling": "StandardScaler"
+    },
+    "metrics": {
+      "rmse": 5.2151,
+      "r2": 0.8935
+    },
+    "timestamp": "2026-10-15 18:40:41 UTC"
+  }
+]

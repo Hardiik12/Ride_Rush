@@ -18,14 +18,14 @@
 
 <!-- Tab Navigation Bar -->
 <div class="workbench-tabs" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
-    <button type="button" class="tab-btn" data-tab="lifecycle" onclick="showTab('lifecycle')">🔄 Lifecycle (M1)</button>
-    <button type="button" class="tab-btn active" data-tab="regression" onclick="showTab('regression')">📈 Regression (M2)</button>
-    <button type="button" class="tab-btn" data-tab="classification" onclick="showTab('classification')">🎯 Classification (M2)</button>
-    <button type="button" class="tab-btn" data-tab="trees" onclick="showTab('trees')">🌲 Trees & Boosting (M3)</button>
-    <button type="button" class="tab-btn" data-tab="unsupervised" onclick="showTab('unsupervised')">🔍 Clustering & PCA (M4)</button>
-    <button type="button" class="tab-btn" data-tab="evaluation" onclick="showTab('evaluation')">⚖️ Evaluation & Calibration (M5)</button>
-    <button type="button" class="tab-btn" data-tab="engineering" onclick="showTab('engineering')">🛡️ ML Engineering (M6)</button>
-    <button type="button" class="tab-btn" data-tab="syllabus" onclick="showTab('syllabus')">📋 Syllabus Coverage</button>
+    <button type="button" class="tab-btn" data-tab="lifecycle" onclick="showTab('lifecycle')">🔄 Lifecycle & Batch (CO1/M1)</button>
+    <button type="button" class="tab-btn active" data-tab="regression" onclick="showTab('regression')">📈 Regression (CO2/M2)</button>
+    <button type="button" class="tab-btn" data-tab="classification" onclick="showTab('classification')">🎯 Classification (CO3/M2)</button>
+    <button type="button" class="tab-btn" data-tab="trees" onclick="showTab('trees')">🌲 Trees & Boosting (CO4/M3)</button>
+    <button type="button" class="tab-btn" data-tab="unsupervised" onclick="showTab('unsupervised')">🔍 Clustering & PCA (CO5/M4)</button>
+    <button type="button" class="tab-btn" data-tab="evaluation" onclick="showTab('evaluation')">⚖️ Evaluation & Tuning (CO6/M5)</button>
+    <button type="button" class="tab-btn" data-tab="engineering" onclick="showTab('engineering')">🛡️ ML Engineering (CO6/M6)</button>
+    <button type="button" class="tab-btn" data-tab="syllabus" onclick="showTab('syllabus')">📋 CO1–CO6 Coverage</button>
 </div>
 
 <!-- Style overrides for tab buttons -->
@@ -584,33 +584,75 @@
 <!-- ========================================== -->
 <div id="tab-syllabus" class="tab-pane">
     <div class="card" style="border-left: 4px solid #238636;">
-        <h2>📋 RideRush Master Syllabus Coverage Matrix (M1–M6)</h2>
+        <h2>📋 RideRush Master Course Outcome Matrix (CO1–CO6)</h2>
         <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-            Verified audit tracking all 48 required syllabus topics, their implementation files, and test validations.
+            Exhaustive traceability matrix mapping all six Course Outcomes to implementation files, tests, and interfaces.
         </p>
 
         <div class="table-container">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Module</th>
-                        <th>Topic ID</th>
-                        <th>Topic Name</th>
+                        <th>Course Outcome</th>
+                        <th>Focus & Deliverables</th>
                         <th>Status</th>
+                        <th>Core Algorithms & Methods</th>
                         <th>Implementation Source</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td><strong>M1</strong></td><td>M1.1–1.7</td><td>End-to-end Lifecycle, Batch Inference, Retraining Gates</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m1_lifecycle.py</td></tr>
-                    <tr><td><strong>M2</strong></td><td>M2.1–2.6</td><td>Gradient Descent, Normal Equation, Poly, Ridge, Lasso, Elastic Net</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/regression_workbench.py</td></tr>
-                    <tr><td><strong>M2</strong></td><td>M2.7–2.12</td><td>Binary & Multinomial Logistic, Sigmoid, Softmax, OOF Encoding</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m2_classification.py</td></tr>
-                    <tr><td><strong>M3</strong></td><td>M3.1–3.7</td><td>Decision Tree, Random Forest OOB, AdaBoost, Gradient Boosting</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m3_trees.py</td></tr>
-                    <tr><td><strong>M3</strong></td><td>M3.8–3.10</td><td>HistGradientBoosting (LightGBM equivalent), MDI, Permutation, SHAP</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m3_trees.py</td></tr>
-                    <tr><td><strong>M4</strong></td><td>M4.1–4.9</td><td>K-Means++, Elbow/Silhouette, DBSCAN, PCA, Isolation Forest, SVM</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m4_unsupervised.py</td></tr>
-                    <tr><td><strong>M5</strong></td><td>M5.1–5.9</td><td>5-Fold CV, Stratified CV, Nested CV, Search, Calibration, McNemar, CI</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m5_evaluation.py</td></tr>
-                    <tr><td><strong>M6</strong></td><td>M6.1–6.10</td><td>Model Registry, SHA256, Batch Endpoint, Drift KS/PSI, Dockerfile</td><td><span class="badge badge-success">COMPLETE</span></td><td style="font-family: monospace;">ml/m6_engineering.py</td></tr>
+                    <tr>
+                        <td><strong>CO1</strong></td>
+                        <td>Data Wrangling, Cleaning, Outliers, Imputation, Scalers & Duplicates</td>
+                        <td><span class="badge badge-success">COMPLETE</span></td>
+                        <td>Dask Ingestion, Tukey IQR, Boxplots, Winsorization, MCAR/MAR/MNAR, KNN/MICE, StandardScaler, RobustScaler, Duplicates</td>
+                        <td style="font-family: monospace;">ml/data_cleaning.py, ml/outliers.py, ml/missing_values.py, ml/scaling.py</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CO2</strong></td>
+                        <td>Supervised Regression: Gradient Descent & Regularization</td>
+                        <td><span class="badge badge-success">COMPLETE</span></td>
+                        <td>Batch Gradient Descent, Closed-form Normal Equation, Polynomial (deg 2), Ridge (L2), Lasso (L1), Elastic Net (L1+L2)</td>
+                        <td style="font-family: monospace;">ml/linear_regression.py, ml/regression_workbench.py</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CO3</strong></td>
+                        <td>Supervised Classification, Imbalance & Target Transformations</td>
+                        <td><span class="badge badge-success">COMPLETE</span></td>
+                        <td>Binary (High Tip) & Multinomial (Fare Tier), Sigmoid, Softmax, Cross-Entropy Loss, Balanced Class Weights, OOF Target Encoding</td>
+                        <td style="font-family: monospace;">ml/m2_classification.py</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CO4</strong></td>
+                        <td>Tree-Based Ensembles, Boosting Paradigms & Explainability</td>
+                        <td><span class="badge badge-success">COMPLETE</span></td>
+                        <td>CART Decision Trees, CCP Pruning, Random Forest (OOB Score), AdaBoost, Gradient Boosting, HistGradientBoosting, MDI/Permutation, SHAP</td>
+                        <td style="font-family: monospace;">ml/m3_trees.py</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CO5</strong></td>
+                        <td>Unsupervised Learning, Clustering, PCA & Anomaly Detection</td>
+                        <td><span class="badge badge-success">COMPLETE</span></td>
+                        <td>K-Means++, Elbow WCSS & Silhouette, MiniBatchKMeans, Hierarchical Ward Dendrogram, DBSCAN, PCA (98.8% var), Isolation Forest, SVM</td>
+                        <td style="font-family: monospace;">ml/m4_unsupervised.py</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CO6</strong></td>
+                        <td>Model Evaluation, Probability Calibration & Production MLOps</td>
+                        <td><span class="badge badge-success">COMPLETE</span></td>
+                        <td>5-Fold CV, Stratified CV, Nested 3x3 CV, Grid/Random Search, Platt/Isotonic, McNemar Test, Bootstrap CI, Model Registry, SHA256, Drift</td>
+                        <td style="font-family: monospace;">ml/m5_evaluation.py, ml/m6_engineering.py, ml/m1_lifecycle.py</td>
+                    </tr>
                 </tbody>
             </table>
+        </div>
+        
+        <div style="margin-top: 1.5rem; padding: 1rem; background: #0d1117; border-radius: 6px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+                <strong style="color: #58a6ff;">📄 Detailed Documentation:</strong>
+                <span style="color: #8b949e; font-size: 0.9rem; margin-left: 0.5rem;">See <code>docs/CO1_CO6_COVERAGE.md</code> and <code>docs/FINAL_IMPLEMENTATION_REPORT.md</code> for exhaustive topic breakdown.</span>
+            </div>
+            <a href="{{ url_for('eda_page') }}" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">Explore CO1 EDA Dashboard 📊</a>
         </div>
     </div>
 </div>

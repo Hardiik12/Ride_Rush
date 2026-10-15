@@ -39,99 +39,143 @@ class TaxiDataPipeline:
         Executes full pipeline if not cached or force=True.
         """
         os.makedirs(REPORTS_DIR, exist_ok=True)
+        required_keys = ["m1_lifecycle", "m2_classification", "m3_trees", "m4_unsupervised", "m5_evaluation", "m6_engineering"]
+        
         if not force and os.path.exists(CACHE_FILE):
             print(f"[INFO] Loading cached pipeline summary from {CACHE_FILE}")
             with open(CACHE_FILE, "r") as f:
                 self.results = json.load(f)
-            return self.results
+            
+            missing_keys = [k for k in required_keys if k not in self.results]
+            if not missing_keys:
+                return self.results
+            print(f"[INFO] Cache missing extended modules: {missing_keys}. Computing and updating...")
 
         print("=" * 60)
         print("STARTING NYC TAXI BIG DATA PIPELINE (DASK + CO1 ANALYSIS + GRADIENT DESCENT)")
         print("=" * 60)
 
-        # 1. Data Loading & Understanding
-        print("[STEP 1] Loading Parquet Dataset lazily...")
-        df_raw = load_taxi_data(self.data_path)
-        print("[STEP 2] Extracting Dataset Information...")
-        info = get_dataset_info(df_raw, self.data_path)
+        has_base = (
+            "dataset_info" in self.results and
+            "quality_metrics" in self.results and
+            "cleaning_stats" in self.results and
+            "outliers" in self.results and
+            "missing_values" in self.results and
+            "scaling" in self.results and
+            "duplicates" in self.results and
+            "regression" in self.results and
+            "workbench" in self.results
+        )
 
-        # 2. Data Quality Analysis
-        print("[STEP 3] Running Data Quality Checks...")
-        quality = check_data_quality(df_raw)
+        if has_base and not force:
+            print("[INFO] Reusing cached baseline steps 1-7; computing extended M1-M6 modules...")
+            df_raw = load_taxi_data(self.data_path)
+            df_clean, _ = clean_taxi_data(df_raw)
 
-        # 3. Data Cleaning
-        print("[STEP 4] Executing Dask Data Cleaning Filters...")
-        df_clean, cleaning_stats = clean_taxi_data(df_raw)
+            print("[STEP 8] Sampling representative feature-engineered data for M1-M6 modules...")
+            sample_df = extract_representative_ml_sample(df_clean, sample_frac=0.03, random_state=42)
 
-        # 4. EDA & Visualization
-        print("[STEP 5] Generating EDA Visualizations & Insights...")
-        eda_results = run_full_eda(df_clean)
+            print("[STEP 9] Executing M1 Lifecycle Pipeline & Batch Engine...")
+            self.results["m1_lifecycle"] = run_complete_m1_lifecycle(df_clean)
 
-        # 5. CO1 Outlier Analysis & Treatment Comparisons
-        print("[STEP 5b] Executing CO1 Outlier Analysis (Boxplots, IQR, Winsorization)...")
-        outlier_results = run_complete_outlier_analysis(df_clean)
+            print("[STEP 10] Executing M2 Supervised Classification Workbench...")
+            self.results["m2_classification"] = run_complete_m2_classification(df_clean)
 
-        # 6. CO1 Missing Value Analysis & Imputation Techniques
-        print("[STEP 5c] Executing CO1 Missing Value Analysis & Imputation Techniques...")
-        missing_value_results = run_complete_missing_value_analysis(df_clean)
+            print("[STEP 11] Executing M3 Tree Models & Boosting Benchmarks...")
+            self.results["m3_trees"] = run_complete_m3_trees(df_clean)
 
-        # 7. CO1 Feature Scaling & Leakage Analysis
-        print("[STEP 5d] Executing CO1 Feature Scaling & Leakage Safeguards Analysis...")
-        scaling_results = run_complete_scaling_analysis(df_clean)
+            print("[STEP 12] Executing M4 Unsupervised Learning & Clustering...")
+            self.results["m4_unsupervised"] = run_complete_m4_unsupervised(df_clean)
 
-        # 8. CO1 Duplicate Detection & Treatment Analysis
-        print("[STEP 5e] Executing CO1 Duplicate Detection & Treatment Evaluation...")
-        duplicate_results = run_complete_duplicate_analysis(df_clean)
+            print("[STEP 13] Executing M5 Evaluation, Model Selection & Calibration...")
+            self.results["m5_evaluation"] = run_complete_m5_evaluation(df_clean)
 
-        # 9. Simple Linear Regression & Gradient Descent
-        print("[STEP 6] Training Simple Linear Regression Model with Gradient Descent...")
-        regression_results = train_and_save_regression_model(df_clean)
+            print("[STEP 14] Executing M6 ML Engineering & Registry Operations...")
+            self.results["m6_engineering"] = run_complete_m6_engineering(sample_df)
+        else:
+            # 1. Data Loading & Understanding
+            print("[STEP 1] Loading Parquet Dataset lazily...")
+            df_raw = load_taxi_data(self.data_path)
+            print("[STEP 2] Extracting Dataset Information...")
+            info = get_dataset_info(df_raw, self.data_path)
 
-        # 10. M2 Regression Model Workbench
-        print("[STEP 7] Executing M2 Regression Model Workbench (Polynomial, Ridge, Lasso, Elastic Net)...")
-        workbench_results = run_complete_regression_workbench(df_clean)
+            # 2. Data Quality Analysis
+            print("[STEP 3] Running Data Quality Checks...")
+            quality = check_data_quality(df_raw)
 
-        # 11. M1-M6 Extended Modules
-        print("[STEP 8] Sampling representative feature-engineered data for M1-M6 modules...")
-        sample_df = extract_representative_ml_sample(df_clean, sample_frac=0.03, random_state=42)
+            # 3. Data Cleaning
+            print("[STEP 4] Executing Dask Data Cleaning Filters...")
+            df_clean, cleaning_stats = clean_taxi_data(df_raw)
 
-        print("[STEP 9] Executing M1 Lifecycle Pipeline & Batch Engine...")
-        m1_results = run_complete_m1_lifecycle(df_clean)
+            # 4. EDA & Visualization
+            print("[STEP 5] Generating EDA Visualizations & Insights...")
+            eda_results = run_full_eda(df_clean)
 
-        print("[STEP 10] Executing M2 Supervised Classification Workbench...")
-        m2_clf_results = run_complete_m2_classification(df_clean)
+            # 5. CO1 Outlier Analysis & Treatment Comparisons
+            print("[STEP 5b] Executing CO1 Outlier Analysis (Boxplots, IQR, Winsorization)...")
+            outlier_results = run_complete_outlier_analysis(df_clean)
 
-        print("[STEP 11] Executing M3 Tree Models & Boosting Benchmarks...")
-        m3_tree_results = run_complete_m3_trees(df_clean)
+            # 6. CO1 Missing Value Analysis & Imputation Techniques
+            print("[STEP 5c] Executing CO1 Missing Value Analysis & Imputation Techniques...")
+            missing_value_results = run_complete_missing_value_analysis(df_clean)
 
-        print("[STEP 12] Executing M4 Unsupervised Learning & Clustering...")
-        m4_unsup_results = run_complete_m4_unsupervised(df_clean)
+            # 7. CO1 Feature Scaling & Leakage Analysis
+            print("[STEP 5d] Executing CO1 Feature Scaling & Leakage Safeguards Analysis...")
+            scaling_results = run_complete_scaling_analysis(df_clean)
 
-        print("[STEP 13] Executing M5 Evaluation, Model Selection & Calibration...")
-        m5_eval_results = run_complete_m5_evaluation(df_clean)
+            # 8. CO1 Duplicate Detection & Treatment Analysis
+            print("[STEP 5e] Executing CO1 Duplicate Detection & Treatment Evaluation...")
+            duplicate_results = run_complete_duplicate_analysis(df_clean)
 
-        print("[STEP 14] Executing M6 ML Engineering & Registry Operations...")
-        m6_eng_results = run_complete_m6_engineering(sample_df)
+            # 9. Simple Linear Regression & Gradient Descent
+            print("[STEP 6] Training Simple Linear Regression Model with Gradient Descent...")
+            regression_results = train_and_save_regression_model(df_clean)
 
-        self.results = {
-            "dataset_info": info,
-            "quality_metrics": quality,
-            "cleaning_stats": cleaning_stats,
-            "outlier_table": eda_results["outlier_table"],
-            "insights": eda_results["insights"],
-            "outliers": outlier_results,
-            "missing_values": missing_value_results,
-            "scaling": scaling_results,
-            "duplicates": duplicate_results,
-            "regression": regression_results,
-            "workbench": workbench_results,
-            "m1_lifecycle": m1_results,
-            "m2_classification": m2_clf_results,
-            "m3_trees": m3_tree_results,
-            "m4_unsupervised": m4_unsup_results,
-            "m5_evaluation": m5_eval_results,
-            "m6_engineering": m6_eng_results
-        }
+            # 10. M2 Regression Model Workbench
+            print("[STEP 7] Executing M2 Regression Model Workbench (Polynomial, Ridge, Lasso, Elastic Net)...")
+            workbench_results = run_complete_regression_workbench(df_clean)
+
+            # 11. M1-M6 Extended Modules
+            print("[STEP 8] Sampling representative feature-engineered data for M1-M6 modules...")
+            sample_df = extract_representative_ml_sample(df_clean, sample_frac=0.03, random_state=42)
+
+            print("[STEP 9] Executing M1 Lifecycle Pipeline & Batch Engine...")
+            m1_results = run_complete_m1_lifecycle(df_clean)
+
+            print("[STEP 10] Executing M2 Supervised Classification Workbench...")
+            m2_clf_results = run_complete_m2_classification(df_clean)
+
+            print("[STEP 11] Executing M3 Tree Models & Boosting Benchmarks...")
+            m3_tree_results = run_complete_m3_trees(df_clean)
+
+            print("[STEP 12] Executing M4 Unsupervised Learning & Clustering...")
+            m4_unsup_results = run_complete_m4_unsupervised(df_clean)
+
+            print("[STEP 13] Executing M5 Evaluation, Model Selection & Calibration...")
+            m5_eval_results = run_complete_m5_evaluation(df_clean)
+
+            print("[STEP 14] Executing M6 ML Engineering & Registry Operations...")
+            m6_eng_results = run_complete_m6_engineering(sample_df)
+
+            self.results = {
+                "dataset_info": info,
+                "quality_metrics": quality,
+                "cleaning_stats": cleaning_stats,
+                "outlier_table": eda_results["outlier_table"],
+                "insights": eda_results["insights"],
+                "outliers": outlier_results,
+                "missing_values": missing_value_results,
+                "scaling": scaling_results,
+                "duplicates": duplicate_results,
+                "regression": regression_results,
+                "workbench": workbench_results,
+                "m1_lifecycle": m1_results,
+                "m2_classification": m2_clf_results,
+                "m3_trees": m3_tree_results,
+                "m4_unsupervised": m4_unsup_results,
+                "m5_evaluation": m5_eval_results,
+                "m6_engineering": m6_eng_results
+            }
 
         # Cache results to JSON safely
         with open(CACHE_FILE, "w") as f:

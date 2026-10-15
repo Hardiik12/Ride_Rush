@@ -1724,5 +1724,677 @@
       "l1_vs_l2_geometry": "L1 (Lasso) vs L2 (Ridge) Geometric Duality: Ridge's L2 constraint region is a smooth hypersphere (\u2211 w\u2c7c\u00b2 \u2264 C). The elliptical contours of the MSE loss typically intersect the sphere along curved boundaries, shrinking all weights proportionally without setting them strictly to zero. Lasso's L1 constraint region is a sharp diamond / cross-polytope (\u2211 |w\u2c7c| \u2264 C) with vertices located directly on the coordinate axes. The loss contours frequently intersect at these sharp corners, forcing coefficients to exactly zero and performing automatic feature selection.",
       "polynomial_overfitting_risks": "Why Polynomial Regression Can Overfit: Polynomial regression projects features into higher-order powers [x, x\u00b2, x\u00b3, ..., x\u1d48]. While degree 2 models natural tapering of fare rates over longer hauls, degrees \u2265 3 introduce Runge's phenomenon: extreme oscillations near the edges of the feature support. The model twists to pass through outlier data points in the training set, causing MSE on unseen test data to explode."
     }
+  },
+  "m1_lifecycle": {
+    "lifecycle_stages": [
+      {
+        "stage_id": 1,
+        "name": "Data Ingestion & Lazy Loading",
+        "file": "ml/data_loader.py",
+        "entrypoint": "load_taxi_data()",
+        "artifact": "data/yellow_tripdata_2025-01.parquet",
+        "description": "Lazy multi-partition streaming via Dask DataFrame without materializing 3.4M+ rows in RAM."
+      },
+      {
+        "stage_id": 2,
+        "name": "Data Quality Profiling",
+        "file": "ml/data_cleaning.py",
+        "entrypoint": "check_data_quality()",
+        "artifact": "pipeline_summary.json -> quality_metrics",
+        "description": "Schema validation, null percentage audits, negative fare checks, and coordinate integrity."
+      },
+      {
+        "stage_id": 3,
+        "name": "Data Cleaning & Outlier Treatment",
+        "file": "ml/data_cleaning.py, ml/outliers.py",
+        "entrypoint": "clean_taxi_data(), run_complete_outlier_analysis()",
+        "artifact": "pipeline_summary.json -> cleaning_stats",
+        "description": "IQR boundaries, Winsorization comparisons, and removal of aberrant meter values."
+      },
+      {
+        "stage_id": 4,
+        "name": "Feature Engineering & Imputation",
+        "file": "ml/common.py, ml/missing_values.py",
+        "entrypoint": "extract_representative_ml_sample()",
+        "artifact": "Transformed in-memory sample",
+        "description": "Derives trip_duration_min, pickup_hour, tip_fraction, and fare_tier with leakage-safe imputers."
+      },
+      {
+        "stage_id": 5,
+        "name": "Leakage-Safe Partitioning",
+        "file": "ml/common.py",
+        "entrypoint": "prepare_train_val_test_splits()",
+        "artifact": "Split dictionaries (70/15/15)",
+        "description": "Strict 3-way partition: Train (fitting), Validation (hyperparameters), Held-out Test (final benchmark)."
+      },
+      {
+        "stage_id": 6,
+        "name": "Model Training & Regularization",
+        "file": "ml/regression_workbench.py, ml/m2_classification.py, ml/m3_trees.py",
+        "entrypoint": "train_workbench_models(), train_tree_models()",
+        "artifact": "Fitted Pipeline objects",
+        "description": "Fits Linear GD, Polynomial, Ridge, Lasso, Elastic Net, Decision Trees, Random Forest, HistGradientBoosting."
+      },
+      {
+        "stage_id": 7,
+        "name": "Hyperparameter Optimization & Tuning",
+        "file": "ml/m5_evaluation.py",
+        "entrypoint": "run_model_selection_experiments()",
+        "artifact": "GridSearch / RandomizedSearch results",
+        "description": "K-fold cross-validation and parameter grid sweeps on training/val folds only."
+      },
+      {
+        "stage_id": 8,
+        "name": "Unbiased Held-Out Test Evaluation",
+        "file": "ml/m5_evaluation.py",
+        "entrypoint": "evaluate_all_workbench_models()",
+        "artifact": "static/charts/regression_workbench_metrics.png",
+        "description": "Single-pass evaluation on test records reporting MAE, MSE, RMSE, R2, ROC-AUC, and F1."
+      },
+      {
+        "stage_id": 9,
+        "name": "Model Packaging & Registry",
+        "file": "ml/m6_engineering.py",
+        "entrypoint": "save_model_artifact(), load_model_artifact()",
+        "artifact": "outputs/models/*.joblib + metadata.json",
+        "description": "Encapsulates model binary, feature schema, preprocessor state, library versions, and SHA256 checksums."
+      },
+      {
+        "stage_id": 10,
+        "name": "Validated Prediction Serving",
+        "file": "app.py, data.py",
+        "entrypoint": "/api/predict, /api/workbench/predict, /api/workbench/batch-predict",
+        "artifact": "Flask JSON endpoints",
+        "description": "Fast inference endpoints with runtime schema validation, type coercion, and error handling."
+      },
+      {
+        "stage_id": 11,
+        "name": "Production Telemetry & Drift Monitoring",
+        "file": "ml/m6_engineering.py",
+        "entrypoint": "detect_feature_drift(), get_monitoring_telemetry()",
+        "artifact": "pipeline_summary.json -> monitoring",
+        "description": "Tracks request count, latency distribution, and Kolmogorov-Smirnov / PSI drift on feature inputs."
+      },
+      {
+        "stage_id": 12,
+        "name": "Retraining Triggers & Promotion Gate",
+        "file": "ml/m1_lifecycle.py",
+        "entrypoint": "check_retraining_triggers()",
+        "artifact": "Retraining decision log",
+        "description": "Automated policies triggering pipeline re-run when drift PSI > 0.25 or accuracy degrades by > 5%."
+      }
+    ],
+    "educational_theory": {
+      "learning_paradigms": {
+        "supervised": {
+          "title": "Supervised Learning",
+          "definition": "Learning a functional mapping f(X) -> y from labeled input-output pairs.",
+          "ridedush_example": "Predicting total fare_amount ($) or high_tip probability based on trip_distance, pickup_hour, and duration.",
+          "key_challenges": "Label acquisition cost, label noise, target leakage, and covariate shift."
+        },
+        "unsupervised": {
+          "title": "Unsupervised Learning",
+          "definition": "Discovering latent structure, density, or geometric clusters in data X without supervision labels.",
+          "ridedush_example": "Clustering NYC taxi trips into behavioral segments (e.g., Short Midtown hops vs. Airport transfers) using K-Means and DBSCAN.",
+          "key_challenges": "Ambiguity of cluster validity, sensitivity to scaling, and absence of an objective ground-truth metric."
+        },
+        "reinforcement": {
+          "title": "Reinforcement Learning",
+          "definition": "Training an agent to maximize cumulative discounted rewards through trial-and-error environment interaction.",
+          "ridedush_example": "Dynamic fleet rebalancing and surge pricing: Taxi agents receive rewards based on revenue earned minus idle cruise fuel costs.",
+          "key_challenges": "Sample inefficiency, credit assignment, exploration vs. exploitation tradeoff, and sim-to-real transfer."
+        }
+      },
+      "training_serving_skew": {
+        "concept": "Training-Serving Skew is the performance discrepancy between training evaluation and production inference.",
+        "root_causes": [
+          "Data Leakage: Using features at training time that are unavailable or uncalculated at real-time inference (e.g., total_amount before dropoff).",
+          "Inconsistent Pipelines: Preprocessing features with different libraries or code paths between offline Python and production web services.",
+          "Covariate Shift: Changes in input feature distribution P(X) between historical training data and current live passenger requests.",
+          "Time Lag & Staleness: Serving inferences with models trained on outdated traffic tariffs or pre-congestion fee periods."
+        ],
+        "ridedush_mitigation": "Encapsulating all scaling and transformations in Scikit-Learn Pipelines fitted solely on training splits, with unified schema validation at both train and inference time."
+      },
+      "feature_store_architecture": {
+        "concept": "A centralized repository that coordinates feature definitions, storage, and retrieval across training and serving.",
+        "dual_storage": {
+          "offline_store": "High-throughput data warehouse / Parquet store optimized for large-scale batch model training and point-in-time backfills.",
+          "online_store": "Ultra-low-latency key-value cache (e.g., Redis, DynamoDB) retrieving passenger and location features in under 10ms during live REST API prediction calls."
+        },
+        "point_in_time_correctness": "Ensures features retrieved for historical training instances reflect exactly what was known at the prediction timestamp t_0, eliminating lookahead bias."
+      }
+    },
+    "retraining_status": {
+      "drift_psi": 0.08,
+      "drift_threshold": 0.2,
+      "error_degradation_pct": 2.1,
+      "degradation_threshold_pct": 5.0,
+      "retraining_recommended": false,
+      "decision": "MODEL HEALTHY \u2014 PROCEED WITH SERVING"
+    },
+    "flowchart": "m1_lifecycle_flow.png",
+    "demo_batch_result": {
+      "status": "success",
+      "model_key": "polynomial",
+      "model_name": "Polynomial Regression (Degree 2)",
+      "total_processed": 6,
+      "execution_time_ms": 7.2,
+      "mean_fare": 41.4,
+      "min_fare": 9.54,
+      "max_fare": 78.95,
+      "total_revenue": 248.42,
+      "preview": [
+        {
+          "trip_distance": 1.2,
+          "passenger_count": 1,
+          "predicted_fare": 9.54
+        },
+        {
+          "trip_distance": 3.5,
+          "passenger_count": 2,
+          "predicted_fare": 17.63
+        },
+        {
+          "trip_distance": 7.8,
+          "passenger_count": 1,
+          "predicted_fare": 31.97
+        },
+        {
+          "trip_distance": 12.4,
+          "passenger_count": 3,
+          "predicted_fare": 46.15
+        },
+        {
+          "trip_distance": 18.9,
+          "passenger_count": 1,
+          "predicted_fare": 64.18
+        },
+        {
+          "trip_distance": 25.0,
+          "passenger_count": 4,
+          "predicted_fare": 78.95
+        }
+      ]
+    }
+  },
+  "m2_classification": {
+    "target_binary": "is_high_tip (>=18% tip)",
+    "target_multinomial": "fare_tier (Low / Medium / High)",
+    "class_imbalance": {
+      "positive_cases": 39678,
+      "negative_cases": 19176,
+      "imbalance_ratio": "0.48:1"
+    },
+    "binary_models": {
+      "standard": {
+        "name": "Logistic Regression (Uniform)",
+        "accuracy": 0.6842,
+        "precision": 0.6858,
+        "recall": 0.9885,
+        "f1": 0.8098,
+        "roc_auc": 0.5654,
+        "pr_auc": 0.7168,
+        "log_loss": 0.6187,
+        "confusion_matrix": [
+          [
+            150,
+            3884
+          ],
+          [
+            99,
+            8479
+          ]
+        ]
+      },
+      "balanced": {
+        "name": "Logistic Regression (Class-Weighted)",
+        "accuracy": 0.5833,
+        "precision": 0.7144,
+        "recall": 0.6451,
+        "f1": 0.678,
+        "roc_auc": 0.5657,
+        "pr_auc": 0.717,
+        "log_loss": 0.684,
+        "confusion_matrix": [
+          [
+            1822,
+            2212
+          ],
+          [
+            3044,
+            5534
+          ]
+        ]
+      }
+    },
+    "multinomial_model": {
+      "name": "Multinomial Logistic Regression (Softmax)",
+      "accuracy": 0.9637,
+      "f1_macro": 0.9624,
+      "f1_weighted": 0.9637,
+      "log_loss": 0.13,
+      "classes": [
+        "Low (<$12)",
+        "Medium ($12-$25)",
+        "High (>$25)"
+      ],
+      "confusion_matrix": [
+        [
+          5764,
+          148,
+          2
+        ],
+        [
+          151,
+          4364,
+          42
+        ],
+        [
+          7,
+          108,
+          2026
+        ]
+      ]
+    },
+    "chart": "m2_classification_curves.png"
+  },
+  "m3_trees": {
+    "benchmarks": [
+      {
+        "key": "decision_tree",
+        "name": "Decision Tree (Pre-Pruned, Depth 5)",
+        "family": "Single Tree (CART)",
+        "training_time_ms": 65.47,
+        "mae": 1.6,
+        "rmse": 3.86,
+        "r2": 0.9418,
+        "oob_score": null,
+        "parameters": {
+          "max_depth": 5,
+          "min_samples_split": 20,
+          "criterion": "squared_error"
+        }
+      },
+      {
+        "key": "random_forest",
+        "name": "Random Forest (100 Trees, OOB)",
+        "family": "Bagging Ensemble",
+        "training_time_ms": 2409.32,
+        "mae": 1.07,
+        "rmse": 3.8,
+        "r2": 0.9436,
+        "oob_score": 0.9476,
+        "parameters": {
+          "n_estimators": 100,
+          "max_depth": 10,
+          "oob_score": true
+        }
+      },
+      {
+        "key": "adaboost",
+        "name": "AdaBoost Regressor (SAMME)",
+        "family": "Boosting (Adaptive Residuals)",
+        "training_time_ms": 2710.01,
+        "mae": 3.63,
+        "rmse": 5.48,
+        "r2": 0.8827,
+        "oob_score": null,
+        "parameters": {
+          "n_estimators": 50,
+          "learning_rate": 0.1,
+          "loss": "linear"
+        }
+      },
+      {
+        "key": "gradient_boosting",
+        "name": "Gradient Boosting (Friedman MSE)",
+        "family": "Boosting (Gradient Descent Loss)",
+        "training_time_ms": 4837.09,
+        "mae": 1.08,
+        "rmse": 3.85,
+        "r2": 0.9419,
+        "oob_score": null,
+        "parameters": {
+          "n_estimators": 100,
+          "learning_rate": 0.08,
+          "max_depth": 4
+        }
+      },
+      {
+        "key": "hist_gradient_boosting",
+        "name": "HistGradientBoosting (LightGBM Equivalent)",
+        "family": "Histogram-Based Gradient Boosting",
+        "training_time_ms": 310.91,
+        "mae": 1.06,
+        "rmse": 3.65,
+        "r2": 0.9477,
+        "oob_score": null,
+        "parameters": {
+          "max_iter": 100,
+          "max_leaf_nodes": 31,
+          "algorithm": "Histogram Binning (sklearn native)"
+        }
+      }
+    ],
+    "feature_importances": {
+      "mdi_random_forest": {
+        "trip_distance": 0.8791,
+        "pickup_hour": 0.0025,
+        "pickup_dayofweek": 0.0012,
+        "trip_duration_min": 0.1161,
+        "passenger_count": 0.0011
+      },
+      "permutation_importance": {
+        "trip_distance": 1.5648,
+        "pickup_hour": 0.001,
+        "pickup_dayofweek": 0.0001,
+        "trip_duration_min": 0.2345,
+        "passenger_count": 0.0007
+      }
+    },
+    "pruning_path": {
+      "total_alphas_found": 62,
+      "sample_alphas": [
+        0.0,
+        0.02806,
+        0.0597,
+        0.11449,
+        0.32406,
+        174.06228
+      ],
+      "sample_impurities": [
+        12.7713,
+        12.9427,
+        13.4787,
+        14.5523,
+        17.0561,
+        250.7058
+      ]
+    },
+    "optional_dependencies": {
+      "lightgbm": {
+        "available": false,
+        "error": "No module named 'lightgbm'",
+        "note": "HistGradientBoosting [LightGBM unavailable: No module named 'lightgbm']"
+      },
+      "xgboost": {
+        "available": false,
+        "error": "No module named 'xgboost'"
+      },
+      "shap": {
+        "available": false,
+        "error": "No module named 'shap'"
+      }
+    },
+    "educational_theory": {
+      "tree_splitting_mechanics": {
+        "classification_gini_entropy": "In classification trees, splits are evaluated by impurity reduction: Gini Impurity (1 - \u2211 p_i\u00b2) measures misclassification probability when sampling randomly, while Entropy (-\u2211 p_i log\u2082 p_i) measures bits of uncertainty. Information Gain = Impurity(Parent) - \u2211 [N_child/N * Impurity(Child)].",
+        "regression_criteria": "Regression trees split by minimizing variance or Mean Squared Error: Loss = \u2211 (y_i - y_L)\u00b2 + \u2211 (y_i - y_R)\u00b2. The optimal prediction in each leaf is the mean of training targets falling within that partition."
+      },
+      "pruning_strategies": {
+        "pre_pruning": "Early stopping rules that halt recursion before leaves become pure: max_depth (tree ceiling), min_samples_split (minimum parent size), min_samples_leaf (minimum child density).",
+        "post_pruning_ccp": "Minimal Cost-Complexity Pruning (ccp_alpha): Optimizes R_\u03b1(T) = R(T) + \u03b1 \u00b7 |T|, where R(T) is total leaf impurity and |T| is number of terminal leaves. Increasing \u03b1 collapses weak subtree branches, preventing overfitting on noisy outlier trips."
+      },
+      "bagging_vs_boosting": {
+        "random_forest_bagging": "Bootstrap Aggregating (Bagging): Builds multiple decorrelated deep decision trees independently in parallel on bootstrap resamples with random feature subsets. Reduces variance without increasing bias. Out-of-Bag (OOB) samples (\u224836.8% left out per bootstrap) serve as a built-in cross-validation estimate without needing a separate validation split.",
+        "gradient_boosting": "Sequential residual fitting: Each new weak learner tree h_m(x) fits the negative gradient of the loss function (pseudo-residuals) with respect to previous predictions F_{m-1}(x). Applies learning rate shrinkage \u03b7 to guard against greedy overfitting.",
+        "adaboost": "Adapts sample weights exponentially: instances mispredicted by tree m receive increased weight in tree m+1, concentrating ensemble attention on hard boundary examples."
+      },
+      "lightgbm_architecture": {
+        "leaf_wise_growth": "Unlike standard level-wise (depth-first) growth used by traditional Gradient Boosting, LightGBM uses Leaf-Wise (Best-First) tree growth. It splits the leaf that produces the maximum reduction in loss, resulting in significantly lower loss at identical leaf counts.",
+        "histogram_based_binning": "Continuous numerical features are binned into K discrete integer bins (typically K=255). Histogram building is O(#data) rather than O(#data \u00b7 log #data) required by exact sorting. Gradient-based One-Side Sampling (GOSS) retains instances with large gradients while randomly subsampling small-gradient instances, cutting computation time dramatically."
+      },
+      "shap_interpretability": {
+        "concept": "SHapley Additive exPlanations (SHAP) computes game-theoretic Shapley values to allocate credit fairly to each feature for an individual prediction.",
+        "formula": "f(x) = \u03c6\u2080 + \u2211 \u03c6\u1d62(x), where \u03c6\u2080 is base expected value and \u03c6\u1d62 is feature i's marginal contribution averaged across all possible feature subsets.",
+        "treeshap_efficiency": "TreeSHAP computes exact Shapley values in polynomial time O(TLD\u00b2) instead of exponential O(TL2\u1d39), making it practical for ensemble models."
+      }
+    },
+    "chart": "m3_tree_benchmarks.png"
+  },
+  "m4_unsupervised": {
+    "kmeans": {
+      "optimal_k": 3,
+      "elbow_analysis": {
+        "k_values": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "inertias": [
+          86397.74,
+          50126.37,
+          35863.76,
+          30180.55
+        ],
+        "silhouette_scores": [
+          0.7502,
+          0.6134,
+          0.5298,
+          0.4717
+        ],
+        "optimal_k_by_silhouette": 2
+      },
+      "cluster_archetypes": [
+        {
+          "cluster_id": 0,
+          "archetype": "Short Urban Hop",
+          "count": 62065,
+          "pct_of_trips": 73.8,
+          "mean_distance_mi": 1.41,
+          "mean_duration_min": 9.4,
+          "mean_fare_dollar": 10.63
+        },
+        {
+          "cluster_id": 1,
+          "archetype": "Medium Cross-Borough",
+          "count": 5223,
+          "pct_of_trips": 6.2,
+          "mean_distance_mi": 16.66,
+          "mean_duration_min": 45.4,
+          "mean_fare_dollar": 67.37
+        },
+        {
+          "cluster_id": 2,
+          "archetype": "Long / Airport Haul",
+          "count": 16790,
+          "pct_of_trips": 20.0,
+          "mean_distance_mi": 5.36,
+          "mean_duration_min": 23.7,
+          "mean_fare_dollar": 28.29
+        }
+      ],
+      "minibatch_inertia": 50574.44,
+      "full_kmeans_inertia": 50126.37
+    },
+    "pca": {
+      "n_components": 3,
+      "explained_variance_ratio": [
+        0.9152,
+        0.0723,
+        0.0125
+      ],
+      "cumulative_explained_variance": [
+        0.9152,
+        0.9875,
+        1.0
+      ],
+      "first_2_components_var": 0.9875
+    },
+    "dbscan": {
+      "eps": 0.65,
+      "min_samples": 15,
+      "clusters_discovered": 1,
+      "noise_points": 79,
+      "noise_pct": 6.58
+    },
+    "hierarchical": {
+      "linkage_method": "Ward (Minimum Variance)",
+      "sample_size": 200,
+      "cophenetic_distance_max": 28.41
+    },
+    "anomaly_detection": {
+      "isolation_forest_anomalies": 2523,
+      "isolation_forest_pct": 3.0,
+      "one_class_svm_anomalies": 29
+    },
+    "chart": "m4_unsupervised_clusters.png",
+    "educational_theory": {
+      "kmeans_algorithm": {
+        "objective": "Minimizes within-cluster sum of squares (Inertia): J = \u2211\u1d62 \u2211\u2c7c ||x\u2c7c - \u03bc\u1d62||\u00b2",
+        "kmeans_plus_plus": "Selects initial centroids with probability proportional to D(x)\u00b2, the squared Euclidean distance to nearest existing centroid, accelerating convergence and preventing sub-optimal local minima.",
+        "silhouette_metric": "s(i) = (b(i) - a(i)) / max(a(i), b(i)), where a(i) is mean intra-cluster distance and b(i) is mean nearest-cluster distance. Ranges from -1 (misclustered) to +1 (dense, well-separated)."
+      },
+      "dbscan_density": {
+        "concept": "Density-Based Spatial Clustering of Applications with Noise defines clusters as continuous regions of high point density separated by low-density noise.",
+        "hyperparameters": "\u03b5 (epsilon neighborhood radius) and MinPts (minimum points to form a core point). Points within \u03b5 of a core point are density-reachable. Points not reachable from any core point are labeled Noise (-1)."
+      },
+      "pca_mathematics": {
+        "concept": "Orthogonal linear transformation that projects data onto principal components maximizing variance.",
+        "eigen_decomposition": "Computes eigenvectors v and eigenvalues \u03bb of covariance matrix C = 1/N X\u1d40X. Eigenvector with largest \u03bb corresponds to first principal component direction."
+      },
+      "autoencoder_preview": {
+        "concept": "A neural network trained in self-supervised fashion to reproduce its input x at the output x\u0302 via an information bottleneck latent representation h.",
+        "encoder": "h = \u03c3(W_e \u00b7 x + b_e) where dim(h) << dim(x)",
+        "decoder": "x\u0302 = \u03c3(W_d \u00b7 h + b_d)",
+        "anomaly_scoring": "Trips with reconstruction error ||x - x\u0302||\u00b2 above an empirical threshold are flagged as structural anomalies without requiring historical labels."
+      }
+    }
+  },
+  "m5_evaluation": {
+    "kfold_cv": {
+      "k_folds": 5,
+      "fold_r2_scores": [
+        0.9282,
+        0.9331,
+        0.9378,
+        0.9286,
+        0.9408
+      ],
+      "mean_r2": 0.9337,
+      "std_r2": 0.005,
+      "mean_rmse": 4.0747,
+      "std_rmse": 0.1796
+    },
+    "stratified_cv": {
+      "k_folds": 5,
+      "fold_f1_scores": [
+        0.8046,
+        0.8047,
+        0.805,
+        0.8055,
+        0.8046
+      ],
+      "mean_f1": 0.8049,
+      "std_f1": 0.0003
+    },
+    "nested_cv": {
+      "outer_folds": 3,
+      "inner_folds": 3,
+      "nested_rmse_per_fold": [
+        4.2248,
+        4.0038,
+        4.0045
+      ],
+      "nested_mean_rmse": 4.0777,
+      "interpretation": "Nested CV yields an unbiased estimate of generalization error without selection bias."
+    },
+    "search_benchmark": {
+      "grid_search": {
+        "best_alpha": 5.0,
+        "best_r2": 0.9337,
+        "latency_ms": 421.75,
+        "candidates_evaluated": 7
+      },
+      "randomized_search": {
+        "best_alpha": 5.818,
+        "best_r2": 0.9337,
+        "latency_ms": 439.01,
+        "candidates_evaluated": 7
+      }
+    },
+    "probability_calibration": {
+      "uncalibrated": {
+        "brier_score": 0.2139
+      },
+      "platt_sigmoid": {
+        "brier_score": 0.2139
+      },
+      "isotonic_regression": {
+        "brier_score": 0.214
+      }
+    },
+    "mcnemar_test": {
+      "b_cell_m1_better": 9,
+      "c_cell_m2_better": 14,
+      "statistic": 0.6957,
+      "p_value": 0.40425,
+      "statistically_significant": false,
+      "interpretation": "No statistically significant difference between the two classifiers (p >= 0.05)"
+    },
+    "bootstrap_ci_95": {
+      "mean_difference": 0.0163,
+      "ci_95_lower": 0.0027,
+      "ci_95_upper": 0.0301,
+      "zero_in_interval": false
+    },
+    "chart": "m5_model_evaluation.png",
+    "educational_theory": {
+      "nested_cross_validation": {
+        "concept": "Nested CV prevents optimistic selection bias by decoupling hyperparameter tuning from generalisation performance evaluation.",
+        "structure": "Inner Loop (e.g. 3-fold): Searches over hyperparameter grid to find best configuration. Outer Loop (e.g. 3-fold): Evaluates the chosen model on an independent held-out partition."
+      },
+      "probability_calibration": {
+        "platt_scaling": "Fits a logistic sigmoid function P(y=1|f) = 1 / (1 + exp(A\u00b7f + B)) directly onto classifier decision logits f(x). Effective when distortion is sigmoid-shaped.",
+        "isotonic_regression": "Non-parametric piecewise constant monotonic step function that minimizes squared error subject to the constraint that predicted probabilities increase monotonically with score.",
+        "brier_score": "BS = 1/N \u2211 (p_i - y_i)\u00b2. Measures mean squared calibration error. Perfect calibration yields Brier Score = 0."
+      },
+      "hypothesis_testing": {
+        "mcnemar_test": "Non-parametric test of paired nominal classifications. Compares discordant error pairs b (Model 1 right, Model 2 wrong) and c (Model 1 wrong, Model 2 right) to determine if performance differences are statistically significant or due to chance.",
+        "bootstrap_confidence_intervals": "Resamples test records with replacement 1000 times to construct an empirical sampling distribution for performance metric differences, providing robust 95% confidence intervals without normality assumptions."
+      }
+    }
+  },
+  "m6_engineering": {
+    "model_registry_path": "outputs/models/",
+    "telemetry": {
+      "service_status": "HEALTHY",
+      "total_requests_served": 0,
+      "active_model": "baseline_gd",
+      "latency_stats_ms": {
+        "mean": 1.5,
+        "p50_median": 1.2,
+        "p95": 2.5,
+        "p99": 4.0
+      },
+      "last_request_timestamp": "Awaiting live traffic"
+    },
+    "drift_monitoring_demo": {
+      "ks_statistic": 0.236,
+      "p_value": 0.0,
+      "psi_score": 0.9134,
+      "drift_detected": true,
+      "severity": "CRITICAL",
+      "interpretation": "Statistically significant feature distribution drift detected (p < 0.05 or PSI >= 0.25)."
+    },
+    "promotion_gate_decision": {
+      "promoted": true,
+      "metric_compared": "rmse",
+      "candidate_score": 5.2151,
+      "baseline_score": 5.3608,
+      "relative_improvement_pct": 2.72,
+      "status": "PROMOTED TO PRODUCTION"
+    },
+    "educational_theory": {
+      "drift_taxonomy": {
+        "data_drift": "Covariate Shift P(X): Input feature distribution changes over time while conditional label distribution P(Y|X) remains fixed. Example: New bike lane construction increases NYC average trip distances, but the per-mile fare formula remains unchanged.",
+        "concept_drift": "Conditional Shift P(Y|X): The functional relationship between features and target changes over time, even if X remains static. Example: MTA introduces a sudden $2.50 congestion surcharge: identical 3-mile trips now yield higher total fares.",
+        "delayed_ground_truth": "In real-world production ML, ground-truth targets (e.g., driver ratings, tip settlements, fraud chargebacks) arrive hours or weeks after prediction. Therefore, real-time monitoring MUST rely on unsupervised input data drift (KS-test, PSI) rather than instant accuracy calculations."
+      },
+      "artifact_security": {
+        "deserialization_vulnerability": "Python's pickle and joblib protocols serialize executable bytecode (__reduce__ magic method). Loading an unverified .joblib model downloaded over unencrypted channels or from unknown users allows arbitrary code execution. RideRush enforces SHA-256 cryptographic checksums and schema metadata sidecars for all registered artifacts."
+      }
+    }
   }
 }
