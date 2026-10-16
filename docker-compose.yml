@@ -5,12 +5,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: riderush:latest
     container_name: riderush_app
     ports:
       - "5050:5050"
     environment:
       - FLASK_ENV=production
       - PYTHONUNBUFFERED=1
+      - PORT=5050
     volumes:
       - ./outputs:/app/outputs
       - ./static/charts:/app/static/charts

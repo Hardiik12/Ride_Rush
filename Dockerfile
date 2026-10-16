@@ -24,6 +24,7 @@ EXPOSE 5050
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV FLASK_APP=app.py
+ENV PORT=5050
 
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
